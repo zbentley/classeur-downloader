@@ -1,0 +1,31 @@
+{
+  "author": "Zac Bentley",
+  "bugs": {
+    "url": "https://github.com/zbentley/classeur-downloader/issues"
+  },
+  "dependencies": {
+    "classeur_api_client": "*",
+    "commander": "*",
+    "colors": "*",
+    "async": "*",
+    "lodash": "*",
+    "tree-manipulator": "*",
+    "sprintf": "*"
+  },
+  "description": "Script to download files and folders from http://classeur.io/",
+  "homepage": "https://github.com/zbentley/classeur-downloader",
+  "keywords": [
+    "classeur",
+    "api",
+    "download",
+    "sync"
+  ],
+  "license": "MIT",
+  "bin": "downloader.js",
+  "name": "classeur-downloader",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/zbentley/classeur-downloader"
+  },
+  "version": "0.0.1"
+}
