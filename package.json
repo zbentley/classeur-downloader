@@ -4,8 +4,8 @@
     "url": "https://github.com/zbentley/classeur-downloader/issues"
   },
   "dependencies": {
-    "classeur_api_client": "*",
-    "commander": "*",
+    "classeur-api-client": "https://github.com/zbentley/classeur-api-client",
+    "argparse": "*",
     "colors": "*",
     "async": "*",
     "lodash": "*",

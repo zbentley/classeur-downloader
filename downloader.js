@@ -1,9 +1,10 @@
 #!/usr/bin/env node
+'use strict';
 
 var _ = require('lodash');
+var ArgumentParser  = require('argparse').ArgumentParser;
 var async = require('async');
 var classeur = require("classeur-api-client");
-var cli = require('commander');
 var colors = require('colors');
 var fs = require('fs');
 var sprintf = require('sprintf').sprintf;
@@ -41,8 +42,8 @@ function displayFolderTrees(folders, byID) {
     var tm = new TreeManipulator({
         identifierProperty: byID ? "id" : "name",
         nestedNodesProperty: "files",
-        // If we're getting the value of a node, and not its children:
         valueGetter: function(obj, property) {
+            // If we're getting the value of a node, and not its children:
             if (property === this.identifierProperty) { 
                 return classeur.APIobjectToString(obj, byID);
             } else {
@@ -58,69 +59,114 @@ function displayFolderTrees(folders, byID) {
     });
 }
 
-function usage(msg) {
-    p(msg.red);
-    cli.help();
-}
-
-
-function pushToArray(array, split) {
-    if ( split ) {
-        return function(val) {
-            _.spread(_.bind(Array.prototype.push, array))(val.split(","));
-        };
-    } else {
-        return _.ary(_.bind(Array.prototype.push, array), 1);
+function validatePath(path, raise) {
+    var stat = _.attempt(fs.statSync, path);
+    if ( ! (stat instanceof fs.Stats) ) {
+        raise(sprintf("Could not stat directory %s:\n%s", path, stat));
+    } else if ( ! stat.isDirectory() ) {
+        raise(path + " does not exist or is not a directory");
     }
-}
 
-function validatePath(path) {
-    if ( path ) {
-        var stat = _.attempt(fs.statSync, path);
-        if ( ! (stat instanceof fs.Stats) ) {
-            usage(sprintf("Could not stat directory %s:\n%s", path, stat));
-        } else if ( ! stat.isDirectory() ) {
-            usage(path + " does not exist or is not a directory");
-        }
-
-        var error = _.attempt(fs.accessSync, path, fs.R_OK | fs.W_OK);
-        if ( error ) {
-            usage(sprintf("Could not get write access to directory %s:\n%s", path, error));
-        }
+    var error = _.attempt(fs.accessSync, path, fs.R_OK | fs.W_OK);
+    if ( error ) {
+        raise(sprintf("Could not get write access to directory %s:\n%s", path, error));
     }
     return path;
 }
 
 function parseArgs() {
-    var folders = [], files = [];
-
-    cli
-      .version('0.0.1')
-      .option('-u, --user-id [id]', 'User ID token')
-      .option('-k, --api-key [id]', 'API Key')
-      .option('--folders <ids>', 'Comma-separated list of folder IDs', pushToArray(folders, true))
-      .option('-d, --folder [id]', 'Folder to traverse (repeatable)', pushToArray(folders))
-      .option('--files <ids>', 'Comma-separated list of file IDs', pushToArray(files, true))
-      .option('-f, --file [id]', 'File to access (repeatable)', pushToArray(files))
-      .option('-l, --list-contents', 'Just print contents of files or folders; don\'t store them')
-      .option('-i, --by-id', 'List contents by ID, not name')
-      .option('-p, --save-path [path]', 'Save file and folder contents to a filesystem path')
-      .option('-h, ?, -?, --Help', 'Show help message', cli.help)
-      .parse(process.argv);
-
-    if (cli.listContents) {
-        if ( cli.save ) {
-            usage("Only one of --save and --list-contents must be specified");
+    var multiItemParser = new ArgumentParser({
+        addHelp: false
+    });
+    multiItemParser.addArgument(
+        ['-d', '--folders'],
+        {
+            action: 'append',
+            dest: 'folders',
+            nargs: '+',
+            metavar: "folderid"
         }
-    } else if (cli.byId) {
-        usage("--by-id is invalid unless --list-contents is supplied");
-    } else if ( ! cli.savePath ) {
-        usage("One of --save and --list-contents must be specified");
-    }
+    );
 
-    if ( ! ( cli.userId && cli.apiKey ) ) {
-        usage("--userid and --apikey are required");
-    }
+    multiItemParser.addArgument(
+        ['-f', '--files'],
+        {
+            action: 'append',
+            dest: 'files',
+            nargs: '+',
+            metavar: 'fileid'
+        }
+    );
+
+    multiItemParser.addArgument(
+        ['--by-id'],
+        {
+            action: 'storeTrue',
+            dest: 'byID'
+        }
+    );
+
+
+    var parser = new ArgumentParser({
+        version: '0.0.1',
+        addHelp:true,
+        description: 'Argparse example'
+    });
+    var usage = _.modArgs(_.bind(parser.error, parser), colors.red);
+
+    parser.addArgument(
+        [ '-u', '--user-id' ],
+        {
+            help: 'User ID token',
+            dest: "userId",
+            required: true
+        }
+    );
+
+    parser.addArgument(
+        [ '-k', '--api-key' ],
+        {
+            help: 'API Key/Password Analogue',
+            dest: "apiKey",
+            required: true
+        }
+    );
+
+    var subparsers = parser.addSubparsers({
+      title: 'subcommands',
+      dest: "subcommand"
+    });
+
+    var listParser = subparsers.addParser('list', {
+        addHelp: true, 
+        parents: [multiItemParser],
+    });
+
+    var saveParser = subparsers.addParser('save', {
+        addHelp: true, 
+        parents: [multiItemParser],
+    });
+
+    saveParser.addArgument(
+        [ '-m', '--markdown' ],
+        {
+            help: 'Save markdown contents instead of full JSON metadata (like file and folder IDs)',
+            dest: "markdown",
+        }
+    );
+
+    saveParser.addArgument(
+        [ '-p', '--save-path', '--destination' ],
+        {
+            help: 'Save file and folder contents to a filesystem path',
+            dest: "path",
+            required: true,
+        }
+    );
+
+    var args = parser.parseArgs(),
+        folders = args.folders || [],
+        files = args.files || [];
 
     if ( folders.length && files.length ) {
         usage("Specifying both files and folders is not allowed");
@@ -128,20 +174,17 @@ function parseArgs() {
         usage("At least one file or folder must be specified");
     }
 
-    var path = validatePath(cli.savePath);
-
     return {
-        apiKey: cli.apiKey,
-        byID: cli.byId,
-        files: files,
-        folders: folders,
-        save: path,
-        userId: cli.userId,
+        apiKey: args.apiKey,
+        byID: args.byID,
+        files: _.chain(files).uniq().compact().value(),
+        folders: _.chain(folders).uniq().compact().value(),
+        save: args.path ? validatePath(args.path, usage) : null,
+        userId: args.userId,
     };
 }
 
 var options = parseArgs();
-
 if (options.folders.length) {
     var cb = options.save ? function () {} : _.partialRight(displayFolderTrees, options.byID);
     getFolderTrees(options.userId, options.apiKey, options.folders, cb);
