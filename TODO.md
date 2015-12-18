@@ -1,0 +1,4 @@
+- Colors for file tree output. 
+- --nocolors option or interactivity check a la grep.
+- Flattening/ignore directories
+- Create/no-create empty dirs
