@@ -4,11 +4,26 @@
 var _ = require('lodash');
 var ArgumentParser  = require('argparse').ArgumentParser;
 var async = require('async');
-var classeur = require("classeur-api-client");
+var Connection = require("classeur-api-client");
 var colors = require('colors');
 var fs = require('fs');
 var sprintf = require('sprintf').sprintf;
 var TreeManipulator = require('tree-manipulator');
+
+var treeManipulator = _.memoize(function(byId) {
+    return new TreeManipulator({
+        identifierProperty: byId ? "id" : "name",
+        nestedNodesProperty: "files",
+        valueGetter: function(obj, property) {
+            // If we're getting the value of a node, and not its children:
+            if (property === this.identifierProperty) { 
+                return APIobjectToString(obj, byId);
+            } else {
+                return obj[property];
+            }
+        },
+    });
+});
 
 function p(args) {
     console.log(args);
@@ -24,35 +39,8 @@ function fatal(cb) {
     }
 }
 
-function getFolderTrees(userId, apiKey, folders, cb) {
-    var api = classeur.connect({
-        host: "app.classeur.io",
-        userId: userId,
-        apiKey: apiKey, 
-    });
-
-    async.map(
-        folders,
-        _.bind(api.getFolder, api),
-        fatal(cb)
-    );
-}
-
-function displayFolderTrees(folders, byID) {
-    var tm = new TreeManipulator({
-        identifierProperty: byID ? "id" : "name",
-        nestedNodesProperty: "files",
-        valueGetter: function(obj, property) {
-            // If we're getting the value of a node, and not its children:
-            if (property === this.identifierProperty) { 
-                return classeur.APIobjectToString(obj, byID);
-            } else {
-                return obj[property];
-            }
-        },
-    });
-
-    tm.print({
+function displayFolderTrees(folders, byId) {
+    treeManipulator(byId).print({
         id: null,
         name: null,
         files: folders // top-level folders
@@ -72,6 +60,18 @@ function validatePath(path, raise) {
         raise(sprintf("Could not get write access to directory %s:\n%s", path, error));
     }
     return path;
+}
+
+function APIobjectToString(object, byID) {
+    if ( object.id || object.name ) {
+        return sprintf(
+            "%s (%s)",
+            byID ? object.id : object.name,
+            byID ? object.name : object.id
+        );
+    } else {
+        return "";
+    }
 }
 
 function parseArgs() {
@@ -102,10 +102,9 @@ function parseArgs() {
         ['--by-id'],
         {
             action: 'storeTrue',
-            dest: 'byID'
+            dest: 'byId'
         }
     );
-
 
     var parser = new ArgumentParser({
         version: '0.0.1',
@@ -168,26 +167,36 @@ function parseArgs() {
         folders = args.folders || [],
         files = args.files || [];
 
+    // TODO why is flattening necessary?
+    files = _.chain(files).uniq().compact().flatten().value()
+    folders = _.chain(folders).uniq().compact().flatten().value()
+
     if ( folders.length && files.length ) {
         usage("Specifying both files and folders is not allowed");
-    } else if ( ! folders.length + files.length ) {
+    } else if ( ! ( folders.length + files.length ) ) {
         usage("At least one file or folder must be specified");
     }
 
     return {
         apiKey: args.apiKey,
-        byID: args.byID,
-        files: _.chain(files).uniq().compact().value(),
-        folders: _.chain(folders).uniq().compact().value(),
+        byId: args.byId,
+        files: files,
+        folders: folders,
         save: args.path ? validatePath(args.path, usage) : null,
         userId: args.userId,
     };
 }
 
 var options = parseArgs();
-if (options.folders.length) {
-    var cb = options.save ? function () {} : _.partialRight(displayFolderTrees, options.byID);
-    getFolderTrees(options.userId, options.apiKey, options.folders, cb);
-} else { // files mode
+var conn = new Connection({
+    host: "app.classeur.io",
+    userId: options.userId,
+    apiKey: options.apiKey
+});
 
+if (options.folders.length) {
+    var cb = options.save ? function () {} : fatal(_.partialRight(displayFolderTrees, options.byId));
+    conn.getFolders(options.folders, cb);
+} else { // files mode
+    conn.getFiles(options.files, fatal(p));
 }
