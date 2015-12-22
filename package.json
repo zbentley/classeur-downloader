@@ -6,7 +6,7 @@
   "dependencies": {
     "argparse": "*",
     "async": "*",
-    "classeur-api-client": "file:../api/",
+    "classeur-api-client": "https://github.com/zbentley/classeur-api-client",
     "colors": "*",
     "fs-extra": "*",
     "lodash": "*",
