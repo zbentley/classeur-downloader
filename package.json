@@ -4,13 +4,14 @@
     "url": "https://github.com/zbentley/classeur-downloader/issues"
   },
   "dependencies": {
-    "classeur-api-client": "https://github.com/zbentley/classeur-api-client",
     "argparse": "*",
-    "colors": "*",
     "async": "*",
+    "classeur-api-client": "file:../api/",
+    "colors": "*",
+    "fs-extra": "*",
     "lodash": "*",
-    "tree-manipulator": "*",
-    "sprintf": "*"
+    "sprintf": "*",
+    "tree-manipulator": "*"
   },
   "description": "Script to download files and folders from http://classeur.io/",
   "homepage": "https://github.com/zbentley/classeur-downloader",
