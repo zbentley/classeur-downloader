@@ -1,4 +1,8 @@
-- Colors for file tree output. 
+- Tests
+- Colors for file tree output.
+- Lint/hint
 - --nocolors option or interactivity check a la grep.
 - Flattening/ignore directories
-- Create/no-create empty dirs
+- Create/no-create empty dirs?
+- Overwrite support
+- Sections for "list" view: files and folders.
