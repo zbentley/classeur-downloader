@@ -6,3 +6,4 @@
 - Create/no-create empty dirs?
 - Overwrite support
 - Sections for "list" view: files and folders.
+- Progress notification/verbosity

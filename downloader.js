@@ -6,7 +6,7 @@ var async = require('async');
 var colors = require('colors');
 var Connection = require('classeur-api-client');
 var fs = require('fs-extra');
-var path = require('path');
+var pathJoin = _.spread(require('path').join);
 var sprintf = require('sprintf').sprintf;
 var TreeManipulator = require('tree-manipulator');
 
@@ -41,10 +41,6 @@ function treeManipulator(byId, print, items) {
     return tm;
 }
 
-function p(args) {
-    console.log(args);
-}
-
 function fatal(cb) {
     return function(error, result) {
         if (error) {
@@ -73,41 +69,55 @@ function showTree(items, byId) {
     _.forEach(_.sortBy(items, tm.identifierProperty), _.bind(tm.print, tm));
 }
 
-// For each item in the tree, either download it, or make the folder and recurse.
-function makeFolderOrSaveFile(tree, markdown, id, cb) {
-    var node = tree.findNode(id),
-        writepath = path.join(node.path, markdown ? ".md" : ".json");
+function getWriter(path, content) {
+    var writefunc = _.isString(content) ? fs.outputFile : fs.outputJson;
+    path = pathJoin(path);
+    path += _.isString(content) ? ".md" : ".json";
 
-    if ( _.has(item, tree.nestedNodesProperty) ) {
-        async.each(
-            item[tree.nestedNodesProperty],
-            function (child, cb) {
-                makeFolderOrSaveFile(tree, markdown, child[tree.identifierProperty], cb);
-            },
-            cb
-        );
-    } else {
-        var writer = markdown
-            ? _.partial(fs.outputFile, writepath, node.content.text)
-            : _.partial(fs.outputJson, writepath, node);
-
-        async.series(
-            [
-                _.partial(errorIfExists, writepath), // TODO handle overwrite cases, nonexistence
-                writer
-            ],
-            cb
-        );
-    }
+    return _.partial(async.series, [
+        _.partial(errorIfExists, path),
+        _.partial(writefunc, path, content),
+    ]);
 }
 
-function saveTree(items, byId, path, markdown, cb) {
+// For each item in the tree, either download it, or make the folder and recurse.
+function makeFolderOrSaveFile(conn, tree, markdown, id, cb) {
+    var found = tree.findNode(id),
+        path = found.path,
+        kids = tree.nestedNodesProperty,
+        node = found.node,
+        parallel = [];
+
+    if ( _.has(node, kids) ) {
+        // Handle creation of folder metadata; only applies in JSON mode, and only applies to non-root nodes.
+        if ( ! markdown && path.length > 1 ) {
+            path[path.length - 1] += ".folder_metadata";
+            parallel.push(getWriter(path, node));
+        }
+
+        parallel.push(_.partial(async.each, node[kids], function (child, cb) {
+            makeFolderOrSaveFile(conn, tree, markdown, child[tree.identifierProperty], cb);
+        }));
+    } else {
+        parallel.push(_.partial(async.waterfall,[
+            _.bind(conn.getFile, conn, node.id),
+            function(result, cb) {
+                var content = markdown ? result.content.text : result;
+                getWriter(path, content)(cb);
+            }
+        ]));
+    }
+
+    async.parallel(parallel, cb);
+}
+
+function saveTree(items, conn, byId, path, markdown, cb) {
     var tm = treeManipulator(byId, false, {
         id: path,
         name: path,
         files: items // top-level folders and manually-specified files
     });
-    makeFolderOrSaveFile(tm, markdown, path, cb);
+    makeFolderOrSaveFile(conn, tm, markdown, path, cb);
 }
 
 function validatePath(path, raise) {
@@ -211,6 +221,7 @@ function parseArgs() {
         [ '-m', '--markdown' ],
         {
             help: 'Save markdown contents instead of full JSON metadata (like file and folder IDs)',
+            action: 'storeTrue',
             dest: 'markdown',
         }
     );
@@ -248,14 +259,14 @@ function parseArgs() {
 }
 
 var options = parseArgs(),
-    action = options.save
-        ? _.partial(saveTree, _, options.byId, options.save, options.markdown)
-        : _.partialRight(showTree, options.byId),
     conn = new Connection({
         host: 'app.classeur.io',
         userId: options.userId,
         apiKey: options.apiKey
-    });
+    }),
+    action = options.save
+        ? _.partial(saveTree, _, conn, options.byId, options.save, options.markdown)
+        : _.partialRight(showTree, options.byId);
 
 async.parallel(
     [
