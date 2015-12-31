@@ -1,19 +1,20 @@
 #!/usr/bin/env node
+'use strict';
 
-var _ = require('lodash');
-var ArgumentParser  = require('argparse').ArgumentParser;
-var async = require('async');
-var colors = require('colors');
-var Connection = require('classeur-api-client');
-var fs = require('fs-extra');
-var pathJoin = _.spread(require('path').join);
-var sprintf = require('sprintf').sprintf;
-var TreeManipulator = require('tree-manipulator');
+const _ = require('lodash'),
+    ArgumentParser  = require('argparse').ArgumentParser,
+    async = require('async'),
+    colors = require('colors'),
+    ApiClient = require('classeur-api-client'),
+    fs = require('fs-extra'),
+    pathJoin = _.spread(require('path').join),
+    sprintf = require('sprintf').sprintf,
+    TreeManipulator = require('tree-manipulator');
 
 function treeManipulator(byId, print, items) {
-    var props = {
+    let props = {
         identifierProperty: byId ? 'id' : 'name',
-        nestedNodesProperty: "files",
+        nestedNodesProperty: 'files',
     };
     if ( print ) {
         props.valueGetter = function(obj, property) {
@@ -27,7 +28,7 @@ function treeManipulator(byId, print, items) {
         };
     }
 
-    var tm  = new TreeManipulator(props);
+    let tm  = new TreeManipulator(props);
     // If contents are supplied, bind the instance methods used by this script
     // to the contents to prevent having to pass around tree manipulators *and*
     // contents everywhere.
@@ -56,7 +57,7 @@ function errorIfExists(path, cb) {
         if (err && err.errno === -2) {
             cb(null, result);
         } else {
-            cb(err || "File exists!", null);
+            cb(err || 'File exists!', null);
         }
     });
 }
@@ -64,15 +65,15 @@ function errorIfExists(path, cb) {
 // Print a tree rooted at each folder and file. Printing the top-level tree
 // results in leading \____ parent relationships for no reason.
 function showTree(items, byId) {
-    var tm = treeManipulator(byId, true);
+    const tm = treeManipulator(byId, true);
     // TODO group by files vs. folders.
     _.forEach(_.sortBy(items, tm.identifierProperty), _.bind(tm.print, tm));
 }
 
 function getWriter(path, content) {
-    var writefunc = _.isString(content) ? fs.outputFile : fs.outputJson;
+    const writefunc = _.isString(content) ? fs.outputFile : fs.outputJson;
     path = pathJoin(path);
-    path += _.isString(content) ? ".md" : ".json";
+    path += _.isString(content) ? '.md' : '.json';
 
     return _.partial(async.series, [
         _.partial(errorIfExists, path),
@@ -82,16 +83,17 @@ function getWriter(path, content) {
 
 // For each item in the tree, either download it, or make the folder and recurse.
 function makeFolderOrSaveFile(conn, tree, markdown, id, cb) {
-    var found = tree.findNode(id),
-        path = found.path,
+    const found = tree.findNode(id),
         kids = tree.nestedNodesProperty,
         node = found.node,
         parallel = [];
+    let path = found.path;
 
     if ( _.has(node, kids) ) {
-        // Handle creation of folder metadata; only applies in JSON mode, and only applies to non-root nodes.
+        // Handle creation of folder metadata file; only applies in JSON mode,
+        // and only applies to non-root nodes.
         if ( ! markdown && path.length > 1 ) {
-            path[path.length - 1] += ".folder_metadata";
+            path[path.length - 1] += '.folder_metadata';
             parallel.push(getWriter(path, node));
         }
 
@@ -102,8 +104,7 @@ function makeFolderOrSaveFile(conn, tree, markdown, id, cb) {
         parallel.push(_.partial(async.waterfall,[
             _.bind(conn.getFile, conn, node.id),
             function(result, cb) {
-                var content = markdown ? result.content.text : result;
-                getWriter(path, content)(cb);
+                getWriter(path, markdown ? result.content.text : result)(cb);
             }
         ]));
     }
@@ -112,7 +113,7 @@ function makeFolderOrSaveFile(conn, tree, markdown, id, cb) {
 }
 
 function saveTree(items, conn, byId, path, markdown, cb) {
-    var tm = treeManipulator(byId, false, {
+    const tm = treeManipulator(byId, false, {
         id: path,
         name: path,
         files: items // top-level folders and manually-specified files
@@ -121,12 +122,12 @@ function saveTree(items, conn, byId, path, markdown, cb) {
 }
 
 function validatePath(path, raise) {
-    var stat = _.attempt(fs.statSync, path);
+    const stat = _.attempt(fs.statSync, path);
     if ( ! (stat instanceof fs.Stats) || ! stat.isDirectory() ) {
         raise(sprintf('Could not stat directory %s; it may not exist:\n%s', path, stat));
     }
 
-    var error = _.attempt(fs.accessSync, path, fs.R_OK | fs.W_OK);
+    const error = _.attempt(fs.accessSync, path, fs.R_OK | fs.W_OK);
     if ( error ) {
         raise(sprintf('Could not get write access to directory %s:\n%s', path, error));
     }
@@ -145,11 +146,11 @@ function APIobjectToString(object, byId) {
     }
 }
 
-function parseArgs() {
-    var multiItemParser = new ArgumentParser({
+function multiItemParser() {
+    let parser = new ArgumentParser({
         addHelp: false
     });
-    multiItemParser.addArgument(
+    parser.addArgument(
         ['-d', '--folders'],
         {
             action: 'append',
@@ -159,7 +160,7 @@ function parseArgs() {
         }
     );
 
-    multiItemParser.addArgument(
+    parser.addArgument(
         ['-f', '--files'],
         {
             action: 'append',
@@ -169,20 +170,38 @@ function parseArgs() {
         }
     );
 
-    multiItemParser.addArgument(
+    parser.addArgument(
         ['--by-id'],
         {
             action: 'storeTrue',
             dest: 'byId'
         }
     );
+    return parser;
+}
 
-    var parser = new ArgumentParser({
-        version: '0.0.1',
-        addHelp:true,
-        description: 'Argparse example'
-    });
-    var usage = _.modArgs(_.bind(parser.error, parser), colors.red);
+function parseArgs() {
+
+    const multi = multiItemParser();
+    let parser = new ArgumentParser({
+            version: '0.0.1',
+            addHelp:true,
+            description: 'Argparse example'
+        }),
+        subparsers = parser.addSubparsers({
+          title: 'subcommands',
+          dest: 'subcommand'
+        }),
+        saveParser = subparsers.addParser('save', {
+            addHelp: true,
+            parents: [multi],
+        });
+
+    const listParser = subparsers.addParser('list', {
+            addHelp: true,
+            parents: [multi],
+        }),
+        usage = _.modArgs(_.bind(parser.error, parser), colors.red);
 
     parser.addArgument(
         [ '-u', '--user-id' ],
@@ -196,26 +215,11 @@ function parseArgs() {
     parser.addArgument(
         [ '-k', '--api-key' ],
         {
-            help: 'API Key/Password Analogue',
+            help: 'API Key/Password Equivalent',
             dest: 'apiKey',
             required: true
         }
     );
-
-    var subparsers = parser.addSubparsers({
-      title: 'subcommands',
-      dest: 'subcommand'
-    });
-
-    var listParser = subparsers.addParser('list', {
-        addHelp: true,
-        parents: [multiItemParser],
-    });
-
-    var saveParser = subparsers.addParser('save', {
-        addHelp: true,
-        parents: [multiItemParser],
-    });
 
     saveParser.addArgument(
         [ '-m', '--markdown' ],
@@ -235,13 +239,10 @@ function parseArgs() {
         }
     );
 
-    var args = parser.parseArgs(),
-        folders = args.folders || [],
-        files = args.files || [];
-
+    const args = parser.parseArgs();
     // TODO why is flattening necessary?
-    files = _.chain(files).uniq().compact().flatten().value()
-    folders = _.chain(folders).uniq().compact().flatten().value()
+    const folders = _.chain(args.folders || []).uniq().compact().flatten().value(),
+        files = _.chain(args.files || []).uniq().compact().flatten().value();
 
     if ( ! ( folders.length || files.length ) ) {
         usage('At least one file or folder must be specified');
@@ -258,8 +259,8 @@ function parseArgs() {
     };
 }
 
-var options = parseArgs(),
-    conn = new Connection({
+const options = parseArgs(),
+    conn = new ApiClient({
         host: 'app.classeur.io',
         userId: options.userId,
         apiKey: options.apiKey

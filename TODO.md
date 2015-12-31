@@ -5,5 +5,6 @@
 - Flattening/ignore directories
 - Create/no-create empty dirs?
 - Overwrite support
-- Sections for "list" view: files and folders.
+- Sections for "list" view: files and folders (files first, both sections sorted)
 - Progress notification/verbosity
+- Parser/arguments version is built from package.json.
