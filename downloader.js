@@ -8,7 +8,6 @@ const _ = require('lodash'),
     ApiClient = require('classeur-api-client'),
     fs = require('fs-extra'),
     pathJoin = _.spread(require('path').join),
-    sprintf = require('sprintf').sprintf,
     TreeManipulator = require('tree-manipulator');
 
 function treeManipulator(byId, print, items) {
@@ -124,23 +123,19 @@ function saveTree(items, conn, byId, path, markdown, cb) {
 function validatePath(path, raise) {
     const stat = _.attempt(fs.statSync, path);
     if ( ! (stat instanceof fs.Stats) || ! stat.isDirectory() ) {
-        raise(sprintf('Could not stat directory %s; it may not exist:\n%s', path, stat));
+        raise(`'Could not stat directory ${path}; it may not exist:\n${stat}`);
     }
 
     const error = _.attempt(fs.accessSync, path, fs.R_OK | fs.W_OK);
     if ( error ) {
-        raise(sprintf('Could not get write access to directory %s:\n%s', path, error));
+        raise(`Could not get write access to directory ${path}:\n${error}`);
     }
     return path;
 }
 
 function APIobjectToString(object, byId) {
     if ( object.id || object.name ) {
-        return sprintf(
-            '%s (%s)',
-            byId ? object.id : object.name,
-            byId ? object.name : object.id
-        );
+        return `${byId ? object.id : object.name} (${byId ? object.name : object.id})`;
     } else {
         return '';
     }
