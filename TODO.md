@@ -10,6 +10,7 @@
 - Make destination optional: autocreate based on IDs, presume ./
 - Handle existing paths that are files when they should be directories and vice versa.
 - Documentation:
+	- Readme index
 	- Autogenerate CLI documentation from flags or vica versa.
 - Options assertions/schema. Use JSdoc somehow?
 	- Allow variadic file|files, folder|folders.

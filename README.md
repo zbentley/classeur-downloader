@@ -4,13 +4,13 @@ Script to download files and folders from http://classeur.io/
 
 [Classeur](http://classeur.io/) is an online writing and collaboration platform by the authors of [StackEdit](https://stackedit.io/). Documents created and shared within Classeur are stored in HTML local storage and in Classeur's cloud/servers. `classeur-downloader` can be used to download files and folders out of Classeur and onto a local filesystem.
 
-This module is built around [classeur-api-client](zbentley.github.io/classeur-api-client).
+This module is built around [classeur-api-client](zbentley.github.io/classeur-api-client/versions/latest).
 
 # Documentation and Sources
 
-Documentation for this module is available on [GitHub pages](http://zbentley.github.io/classeur-api-client/versions/latest/module-classeur-api-client.html). For documentation on older or unreleased package versions, go [here](http://zbentley.github.io/classeur-api-client).
+Documentation for this module (both the module API and the `cldownload` script) is available on [GitHub pages](http://zbentley.github.io/classeur-downloader/versions/latest). For documentation on older or unreleased package versions, go [here](http://zbentley.github.io/classeur-downloader).
 
-Source code for this package is avaiable at [https://github.com/zbentley/classeur-api-client](https://github.com/zbentley/classeur-api-client).
+Source code for this package is avaiable at [https://github.com/zbentley/classeur-downloader](https://github.com/zbentley/classeur-downloader).
 
 # Installation
 
@@ -113,6 +113,23 @@ The following options apply to all subcommands and should be specified before th
 	- If not set, files and folders will be displayed with their UI-visible names first, and their Classeur object IDs in parentheses.
 
 ## Module API
+
+`cldownload` is a thin wrapper around the underlying `classeur-downloader` module API. That API can be used directly. For example, to get all files in a folder, do the following:
+
+```javascript
+// Saves all files contained in 'folder1' and 'folder2' in subdirectories of mydir/ with those same names:
+downloader.saveTree({
+	folders: ['folder1', 'folder2' ]
+	userId: 'user ID',
+	apiKey: 'api key',
+	path: 'mydir/',
+	markdown: true
+}, (error) => {
+	if (error) throw error;
+});
+```
+
+For complete documentation (generated via [JSDoc](usejsdoc.org) embedded in this module's code), go to [GitHub pages](http://zbentley.github.io/classeur-downloader/versions/latest). For documentation on older or unreleased package versions, go [here](http://zbentley.github.io/classeur-downloader).
 
 ## Using IDs
 

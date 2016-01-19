@@ -113,7 +113,6 @@ function makeFolderOrSaveFile(conn, tree, options, id, cb) {
     if ( _.has(node, kids) ) {
         // Handle creation of folder metadata file; only applies in JSON mode,
         // and only applies to non-root nodes.
-        p(path.length);
         if ( options.folderMetadata && path.length > 1 ) {
             path[path.length - 1] += '.folder_metadata.json';
             parallel.push(getWriter(path, options, false, node));
@@ -218,7 +217,7 @@ function scrubCallback(cb) {
 * - At least one value must be supplied in `options.files` or `options.folders`, otherwise an error will be raised.
 * @property {String[]} [folders] - Array of folder IDs to operate on.
 * - At least one value must be supplied in `options.files` or `options.folders`, otherwise an error will be raised.
-* @property {boolean} [byId=false] - If true, files and folders will be handled (saved or printed) by ID or by Classeur human-readable name.
+* @property {boolean} [byId=false] - If true, files and folders will be handled (saved or printed) by ID. If false, they will be handled by Classeur human-readable name.
 */
 
 /**

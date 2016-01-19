@@ -13,12 +13,13 @@
     "tree-manipulator": "^0.1.1"
   },
   "description": "Script to download files and folders from http://classeur.io/",
-  "homepage": "https://github.com/zbentley/classeur-downloader",
+  "homepage": "http://zbentley.github.io/classeur-downloader/versions/latest",
   "keywords": [
     "classeur",
     "api",
     "download",
-    "sync"
+    "sync",
+    "markdown"
   ],
   "license": "MIT",
   "bin": "downloader.js",
@@ -27,7 +28,8 @@
     "type": "git",
     "url": "https://github.com/zbentley/classeur-downloader"
   },
-  "version": "0.0.1",
+  "version": "0.1.0",
+  "preferGlobal": true,
   "devDependencies": {
     "eyes": "^0.1.8",
     "grunt": "^0.4.5",
