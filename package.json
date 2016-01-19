@@ -22,7 +22,9 @@
     "markdown"
   ],
   "license": "MIT",
-  "bin": "downloader.js",
+  "bin": {
+    "cldownload": "./bin/cldownload.js"
+  },
   "name": "classeur-downloader",
   "repository": {
     "type": "git",
