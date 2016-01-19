@@ -2,6 +2,10 @@
 
 Pull requests are welcome! Pull the [source code](https://github.com/zbentley/classeur-downloader) and hack away.
 
+## Tests
+
+Tests are a work in progress now, and will be released soon.
+
 ## Documentation
 
 ### Building the Main Documentation

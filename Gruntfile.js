@@ -20,7 +20,7 @@ function branchDocumentationTasks(target) {
     const path = `doc/generated/versions/${target}`;
     return {
         jsdoc: {
-            src: ['downloader.js', 'lib/'],
+            src: ['*.js', 'lib/'],
             options: {
                 configure: 'doc/generator/jsdoc.json',
                 recurse: true,
