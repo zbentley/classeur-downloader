@@ -28,3 +28,13 @@ node_modules
 
 # Tests
 *.bash
+
+# Test folder output
+out/
+
+# Generated documentation for the gh-pages branch
+doc/generated/
+
+# OSX garbage
+.DS_Store
+**/.DS_Store

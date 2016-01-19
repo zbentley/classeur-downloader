@@ -6,5 +6,5 @@
 - Create/no-create empty dirs?
 - Overwrite support
 - Sections for "list" view: files and folders (files first, both sections sorted)
-- Progress notification/verbosity
-- Parser/arguments version is built from package.json.
+- Progress notification/verbosity => options.verbose.
+- Make sure pathing works with single files, trailing slashes, etc.
