@@ -2,9 +2,9 @@
 
 This is the documentation landing page for `classeur-api-client`, a node.js client for the REST API of [http://classeur.io/](http://classeur.io/).
 
-API documentation is available at [http://zbentley.github.io/classeur-api-client](http://zbentley.github.io/classeur-api-client).
+API documentation is available at [http://zbentley.github.io/classeur-downloader](http://zbentley.github.io/classeur-downloader).
 
-Source code for this package is avaiable at [https://github.com/zbentley/classeur-api-client](https://github.com/zbentley/classeur-api-client).
+Source code for this package is avaiable at [https://github.com/zbentley/classeur-downloader](https://github.com/zbentley/classeur-downloader).
 
 Select a version of this library below to get started.
 
