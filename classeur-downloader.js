@@ -4,7 +4,8 @@ const _ = require('lodash'),
     ApiClient = require('../api'),
     async = require('async'),
     fs = require('fs-extra'),
-    pathJoin = _.spread(require('path').join),
+    pathMod = require('path'),
+    pathJoin = _.spread(pathMod.join),
     TreeManipulator = require('tree-manipulator');
 
 const eyes = require('eyes'), p = _.bind(eyes.inspect, eyes);
@@ -65,28 +66,34 @@ function errorIfExists(path, cb) {
         if (error && error.errno === -2) { //ENOENT
             cb(null, result);
         } else {
-            cb(error || new Error(`File ${path} exists!`), null);
+            cb(error || new Error(`File ${path} exists, and --overwrite is not set.`), null);
         }
     });
 }
 
-function getWriter(path, content) {
+function getWriter(path, options, content) {
     const writefunc = _.isString(content) ? fs.outputFile : fs.outputJson;
     path = pathJoin(path);
-    path += _.isString(content) ? '.md' : '.json';
+    if ( ! options.norename ) {
+        path += _.isString(content) ? '.md' : '.json';
+    }
 
-    return _.partial(async.series, [
-        _.partial(errorIfExists, path),
-        _.partial(writefunc, path, content),
-    ]);
+    return options.overwrite
+        ? _.partial(writefunc, path, content)
+        : _.partial(async.series, [
+            _.partial(errorIfExists, path),
+            _.partial(writefunc, path, content),
+        ]);
 }
 
 // For each item in the tree, either download it, or make the folder and recurse.
-function makeFolderOrSaveFile(conn, tree, markdown, id, cb) {
+function makeFolderOrSaveFile(conn, tree, options, id, cb) {
     const found = tree.findNode(id),
         kids = tree.nestedNodesProperty,
         node = found.node,
-        parallel = [];
+        parallel = [],
+        markdown = options.markdown;
+
     let path = found.path;
 
     if ( _.has(node, kids) ) {
@@ -94,17 +101,17 @@ function makeFolderOrSaveFile(conn, tree, markdown, id, cb) {
         // and only applies to non-root nodes.
         if ( ! markdown && path.length > 1 ) {
             path[path.length - 1] += '.folder_metadata';
-            parallel.push(getWriter(path, node));
+            parallel.push(getWriter(path, options, node));
         }
 
-        parallel.push(_.partial(async.each, node[kids], function (child, cb) {
-            makeFolderOrSaveFile(conn, tree, markdown, child[tree.identifierProperty], cb);
+        parallel.push(_.partial(async.each, node[kids], (child, cb) => {
+            makeFolderOrSaveFile(conn, tree, options, child[tree.identifierProperty], cb);
         }));
     } else {
         parallel.push(_.partial(async.waterfall,[
             _.bind(conn.getFile, conn, node.id),
             function(result, cb) {
-                getWriter(path, markdown ? result.content.text : result)(cb);
+                getWriter(path, options, markdown ? result.content.text : result)(cb);
             }
         ]));
     }
@@ -123,20 +130,12 @@ function showTree(items, conn, options, cb) {
 }
 
 function saveTree(items, conn, options, cb) {
-    const path = options.save,
-        singleFileOnly = ( ! options.folders || options.folders.length === 0) && options.files && options.files.length === 1,
-        tm = singleFileOnly
-            ? getTree(options.byId, false, {
-                id: options.files[0],
-                name: path
-            })
-            : getTree(options.byId, false, {
-                id: path,
-                name: path,
-                files: items // top-level folders and manually-specified files
-            });
-
-    makeFolderOrSaveFile(conn, tm, options.markdown, path, cb);
+    const path = options.path;
+    makeFolderOrSaveFile(conn, getTree(options.byId, false, {
+        id: path,
+        name: path,
+        files: items // top-level folders and manually-specified files
+    }), options, path, cb);
 }
 
 function APIobjectToString(object, byId) {
@@ -170,10 +169,36 @@ function getFilesAndFolders(options, func, cb) {
     );
 }
 
-module.exports.showTree = function(options, cb) {
-    getFilesAndFolders(options, showTree, cb);
+function assertOptions(options, maxFiles, maxFolders) {
+    options.folders = options.folders || [];
+    options.files = options.files || [];
+    if ( ! _.isUndefined(maxFiles) && options.files.length > maxFiles ) {
+        throw new Error(`Got ${options.files.length} files, but expected no more than ${maxFiles}:\n${options.files}`);
+    }
+
+    if ( ! _.isUndefined(maxFolders) && options.folders.length > maxFolders ) {
+        throw new Error(`Got ${options.folders.length} files, but expected no more than ${maxFolders}:\n${options.folders}`);
+    }
+
+    return options;
 }
 
-module.exports.saveTree = function(options, cb) {
-    getFilesAndFolders(options, saveTree, cb);
+module.exports.showTree = (options, cb) => {
+    getFilesAndFolders(assertOptions(options), showTree, cb);
+}
+
+module.exports.saveTree = (options, cb) => {
+    getFilesAndFolders(assertOptions(options, 1, 0), saveTree, cb);
+}
+
+module.exports.saveSingleFile = (options, cb) => {
+    const conn = new ApiClient(options.userId, options.apiKey, options.host),
+        ext = pathMod.parse(options.path).ext;
+    options.norename = true;
+    async.waterfall([
+        _.bind(conn.getFile, conn, options.file || options.files[0]),
+        (result, cb) => {
+            getWriter([options.path], options, options.markdown ? result.content.text : result)(cb);
+        }
+    ]);
 }

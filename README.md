@@ -80,17 +80,22 @@ The following options apply to all subcommands and should be specified before th
 ### `'save'` Subcommand Options
 
 - `--destination DESTINATION` (Path; must be nonexistent or an empty directory)
-	- Path in which to save downloaded data. If more than one file and/or folder is specified for download, or if `DESTINATION` ends with a trailing slash, then `DESTINATION` must be an existent, writable, empty directory. Otherwise, it must be a nonexistent path inside an existent, writable directory.
+	- Path in which to save downloaded data. If more than one file and/or folder is specified for download, or if `DESTINATION` ends with a trailing slash, then `DESTINATION` must be an existent, writable, directory. Otherwise, it must be a nonexistent path inside an existent, writable directory.
+	- If `--overwrite` is not set and `DESTINATION` is a directpry, `DESTINATION` should empty; otherwise name collisions will cause an error, and partial results may be written into the directory.
 - `--folders FOLDER_ID_1 FOLDER_ID_2 ...` (One or more strings)
     - Folder(s) to download. Each folder will be created (in parallel) inside of `DESTINATION`, with either the name visible in the Classeur UI or the folder ID (depending on the `--by-id` setting). All files inside each folder will then be downloaded into that directory.
 - `--files FILE_ID_1 FILE_ID_2 ...` (One or more strings)
     - File(s) to download. Each file will be downloaded (in parallel) and placed in the appropriate folder inside of `DESTINATION`, with either the name visible in the Classeur UI or the folder ID (depending on the `--by-id` setting).
-    - If a single file ID and no folders are supplied to `cldownload`, `DESTINATION` will be written to as a file, not a directory, unless `DESTINATION` ends with a trailing slash.
+    - If a single file ID and no folders are supplied to `cldownload`, `DESTINATION` will be written to as a file, not a directory, unless `DESTINATION` ends with a trailing slash. In this mode, a file extension (`.md` or `.json`) will not be appended to the downloaded file.
 - `--by-id`
 	- If set, files and folders will be created in `DESTINATION` with names corresponding to their Classeur IDs rather than their UI-visible names.
+- `--overwrite`
+	- If set, files with the same names as ones already in `DESTINATION` will be overwritten.
+	- If not set, errors will be raised when name conflicts occur. However, partial results may still be written to paths without name conflicts.
 - `--markdown`
 	- If set, extensions of downloaded files will be `.md`, and the content of each downloaded file will be the markdown content of the Classeur document that file represents, as visible in the UI.
 	- If not set, extensions of downloaded files will be `.json`, and the content of each downloaded file will be the full JSON information for that document from the Classeur REST API. The full information contains the markdown content as well as other metadata fields, so it cannot be opened in another Markdown editor without modification.
+	- File extensions are not added if the only a single file is being downloaded directly to a file path, and is not being placed in a directory. See `--files` for more info.
 - `--help`
 	- Print the help message for the `save` subcommand, and then exit.
 

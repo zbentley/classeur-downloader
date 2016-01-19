@@ -4,7 +4,10 @@
 - --nocolors option or interactivity check a la grep.
 - Flattening/ignore directories
 - Create/no-create empty dirs?
-- Overwrite support
+- Create/no-create metadata file.
 - Sections for "list" view: files and folders (files first, both sections sorted)
 - Progress notification/verbosity => options.verbose.
-- Make sure pathing works with single files, trailing slashes, etc.
+- Make destination optional: autocreate based on IDs, presume ./
+- Handle existing paths that are files when they should be directories and vice versa.
+- Documentation:
+	- Autogenerate CLI documentation from flags or vica versa.

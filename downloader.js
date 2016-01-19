@@ -10,8 +10,10 @@ const options = parseArgs(),
         if (options.verbose) console.log("Successfully completed!");
     };
 
-if ( options.save ) {
-    downloader.saveTree(options, fatal);
+if ( options.single ) {
+	downloader.saveSingleFile(options, fatal);
+} else if ( options.path ) {
+	downloader.saveTree(options, fatal);
 } else {
-    downloader.showTree(options, fatal);
+	downloader.showTree(options, fatal);
 }
