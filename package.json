@@ -30,7 +30,7 @@
     "type": "git",
     "url": "https://github.com/zbentley/classeur-downloader"
   },
-  "version": "0.1.0",
+  "version": "0.1.1",
   "preferGlobal": true,
   "devDependencies": {
     "eyes": "^0.1.8",

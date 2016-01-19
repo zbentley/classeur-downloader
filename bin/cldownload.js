@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 'use strict';
 
-const parseArgs = require('./lib/argument-parser'),
-    downloader = require('./classeur-downloader');
+const parseArgs = require('../lib/argument-parser'),
+    downloader = require('../classeur-downloader');
 
 // const eyes = require('eyes'), p = eyes.inspect.bind(eyes);
 
