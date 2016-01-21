@@ -10,7 +10,7 @@ Tests are a work in progress now, and will be released soon.
 
 ### Building the Main Documentation
 
-Documentation is generated, and, optionally, pushed to GitHub pages via a [`grunt`](gruntjs.com)-based build process. Generated documentation is placed in `doc/generated`. **The `doc/generated` folder will be removed and re-created as part of any documentation build.**
+Documentation is generated, and, optionally, pushed to GitHub pages via a [grunt](gruntjs.com)-based build process. Generated documentation is placed in `doc/generated`. **The `doc/generated` folder will be removed and re-created as part of any documentation build.**
 
 To generate documentation from the [JSDoc](http://usejsdoc.org/) in the code, do `grunt doc:master` or `grunt doc:current-version`. The names of the two functions are a bit deceptive: both will generate documentation from the branch and version of the module from which you are running `grunt`. The difference is that the former places the documentation into the `doc/generated/master` file, and the latter places it in the `doc/generated/$version` file, where `$version` is the NPM package version from `package.json`.
 

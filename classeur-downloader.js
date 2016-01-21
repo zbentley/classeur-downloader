@@ -11,11 +11,11 @@ const _ = require('lodash'),
 // const eyes = require('eyes'), p = eyes.inspect.bind(eyes);
 
 /**
-* Module for downloading or listing files and folders from [Classeur](http://classeur.io/).
+* Module for downloading and listing files and folders stored in [Classeur](http://classeur.io/).
 *
 * @example <caption>Installation</caption>
 * npm install classeur-downloader
-* @example <caption>Saving a Single File's Markdown Content</caption>
+* @example <caption>Saving a single file's markdown content</caption>
 * const downloader = require('classeur-downloader');
 * downloader.saveSingleFile({
 *     file: 'some file ID',
@@ -26,7 +26,7 @@ const _ = require('lodash'),
 * }, (error) => {
 *     if (error) throw error;
 * });
-* @example <caption>Saving Directories</caption>
+* @example <caption>Saving directories</caption>
 * // Saves all files contained in 'folder1' and 'folder2' in subdirectories of mydir/ with those same names:
 * downloader.saveTree({
 *     folders: ['folder1', 'folder2' ]
@@ -39,7 +39,7 @@ const _ = require('lodash'),
 * });
 * @see The [README](index.html) for an overview and more usage examples.
 * @see The [source code]{@link https://github.com/zbentley/classeur-downloader} on GitHub.
-* @see The [classeur-api-client](http://zbentley.github.io/classeur-api-client/versions/latest/index.html) module (which `classeur-downloader` is based on) for a lower-level way to interact with the Classeur API.
+* @see The [classeur-api-client](http://zbentley.github.io/classeur-api-client/versions/latest) module (which `classeur-downloader` is built around) for a lower-level way to interact with the Classeur API.
 * @module classeur-downloader
 */
 
@@ -231,7 +231,6 @@ function scrubCallback(cb) {
 * @property {boolean} [folderMetadata=false] - If true, generate JSON folder metadata for all folders in `folders`.
 * - If `true`, a single JSON file will be created next to every Classeur folder downloaded. That JSON file will be named after the folder, and will end in `.folder_metadata.json`. It will contain the full Classeur API metadata information for the folder. This is usually not useful, unless you are using `classeur-downlaoder` to back up a locally-hosted Classeur instance with the intent of using the generated files for some future restoration process.
 * @property {boolean} [markdown=false] - Whether or not to write markdown content for files.
-* - If `options.folders` is not supplied or is empty, this option has no effect.
 * - If `true`, saved files' content will be the markdown content of Classeur documents.
 * - If `false`, files' content will be their full JSON data from Classeur. Full JSON data objects include markdown content and other fields, and will likely not be able to be opened directly in a Markdown editor.
 * @property {boolean} [addExtension=true] - Whether or not appropriate extensions should be added to files written.
@@ -244,7 +243,7 @@ function scrubCallback(cb) {
 * All options used by {@link module:classeur-downloader~Options:Global} are also accepted.
 * @typedef {Object} Options:DownloadSingleFile
 * @property {String} path - Destination path to save files and folders from Classeur. Must be either a nonexistent path in a writable directory, or an existent, writable file (if `options.overwrite` is set).
-* @property {String} [file] - Single file ID to download and save. If not provided, `options.files[0]` will be used.
+* @property {String} [file=options.files[0]] - Single file ID to download and save. If not provided, `options.files[0]` will be used.
 * - This option is mutually exclusive with `options.files`.
 * @property {boolean} [overwrite=false] - If true, `path` will be overwritten with the new Classeur file content retrieved.
 * @property {boolean} [markdown=false] - Whether or not to write markdown content for `options.file`.
@@ -255,8 +254,8 @@ function scrubCallback(cb) {
 /**
 * @callback CompletionCallback
 * @param {Error?} error - An throwable Error (or subclass thereof) if an error occurrend.
-* - For errors in writing files, `error` may be any of the errors raised by the [`fs`](https://nodejs.org/api/fs.html) module.
-* - For errors retrieving data from the Classeur API, `error` may be one of the Error subclasses used by [classeur-api-client](http://zbentley.github.io/classeur-api-client/versions/latest/index.html). Errors will be supplied to `CompletionCallback`s in the same way they will be supplied to [ClasseurClient~ScrubbedCallback](http://zbentley.github.io/classeur-api-client/versions/latest/module-classeur-api-client.html#.ScrubbedCallback)s.
+* - For errors in writing files, `error` may be any of the errors raised by the [fs](https://nodejs.org/api/fs.html) module.
+* - For errors retrieving data from the Classeur API, `error` may be one of the Error subclasses used by [classeur-api-client](http://zbentley.github.io/classeur-api-client/versions/latest). Errors will be supplied to `CompletionCallback`s in the same way they will be supplied to [ClasseurClient~ScrubbedCallback](http://zbentley.github.io/classeur-api-client/versions/latest/module-classeur-api-client.html#.ScrubbedCallback)s.
 * - `error` will always be `null` (not `undefined` or another falsy value) if no error occurred.
 * @param {*?} result - Behavior of `result` is not defined; it should not be used. Will usually be `null`. May sometimes contain an array of partial result objects.
 */
@@ -279,7 +278,7 @@ module.exports.showTree = (options, cb) => {
 * @param {module:classeur-downloader~Options:DownloadFilesAndFolders} options - Options for which Classeur files and folders to retrieve, and how to save them.
 * @param {module:classeur-downloader~CompletionCallback} callback - Called with an error, if one occurred, or `null` if all operations were successful.
 *
-* @example <caption>Saving Files by ID</caption>
+* @example <caption>Saving files by ID</caption>
 * // Assume the folder with ID 'abcd' contains files with the IDs 'foo', 'bar', and 'baz'.
 * const downloader = require('classeur-downloader');
 * downloader.saveTree({
@@ -298,7 +297,7 @@ module.exports.showTree = (options, cb) => {
 * //        \_ bar.json
 * //        \_ baz.json
 *
-* @example <caption>Saving Markdown Content</caption>
+* @example <caption>Saving markdown content</caption>
 * // Assume the folder with ID 'abcd' has the UI-visible name 'My Folder'.
 * // Assume it contains two files with IDs 'foo' and 'bar', and the names 'My Stuff' and 'My Other Stuff'.
 * downloader.saveTree({
@@ -327,7 +326,7 @@ module.exports.saveTree = (options, cb) => {
 * - File extensions (e.g. `.md`) will _not_ be added by SaveSingleFile; write the extension you want into `options.path` directly.
 * @param {module:classeur-downloader~CompletionCallback} callback - Called with an error, if one occurred, or `null` if all operations were successful.
 *
-* @example <caption>Save Markdown Content to a Path</caption>
+* @example <caption>Saving a single file's markdown content</caption>
 * const downloader = require('classeur-downloader');
 * downloader.saveSingleFile({
 *     files: 'some file id',

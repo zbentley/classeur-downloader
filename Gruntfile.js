@@ -81,10 +81,6 @@ module.exports = function(grunt) {
                 expand: true,
                 src: ['*.md', 'tutorials.json'],
                 dest: 'doc/generated/tutorials/',
-            },
-            'doc-nojekyll': {
-                src: ['doc/generator/index-placeholder.jsdoc'],
-                dest: 'doc/generated/.nojekyll'
             }
         },
         jsdoc: {
@@ -123,8 +119,6 @@ module.exports = function(grunt) {
         // landing page without having to manually write any markup or menus.
         // Laziness trumps elegance.
         'jsdoc:index',
-        // Disable jekyll so symlinking works.
-        'copy:doc-nojekyll',
         // Re-render the version index template (it's no longer needed for the
         // landing page generation) with relative links that can be used by the
         // per-version documentation.
