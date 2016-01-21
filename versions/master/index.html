@@ -74,7 +74,7 @@
 
 
 
-    <h3>classeur-downloader 0.1.1</h3>
+    <h3>classeur-downloader 0.1.2-development</h3>
 
 
 
@@ -93,8 +93,8 @@
 
     <section class="readme-section">
         <article><h1>classeur-downloader</h1><p>Script to download files and folders from http://classeur.io/</p>
-<p><a href="http://classeur.io/">Classeur</a> is an online writing and collaboration platform by the authors of <a href="https://stackedit.io/">StackEdit</a>. Documents created and shared within Classeur are stored in HTML local storage and in Classeur's cloud/servers. <code>classeur-downloader</code> can be used to download files and folders out of Classeur and onto a local filesystem.</p>
-<p>This module is built around <a href="zbentley.github.io/classeur-api-client/versions/latest">classeur-api-client</a>.</p>
+<p><a href="http://classeur.io/">Classeur</a> is an online writing and collaboration platform by the creators of <a href="https://stackedit.io/">StackEdit</a>. Documents created and shared within Classeur are stored in HTML local storage and in Classeur's cloud/servers. <code>classeur-downloader</code> can be used to download files and folders out of Classeur and onto a local filesystem.</p>
+<p>This module is built around <a href="http://zbentley.github.io/classeur-api-client/versions/latest">classeur-api-client</a>.</p>
 <h1>Documentation and Sources</h1><p>Documentation for this module (both the module API and the <code>cldownload</code> script) is available on <a href="http://zbentley.github.io/classeur-downloader/versions/latest">GitHub pages</a>. For documentation on older or unreleased package versions, go <a href="http://zbentley.github.io/classeur-downloader">here</a>.</p>
 <p>Source code for this package is avaiable at <a href="https://github.com/zbentley/classeur-downloader">https://github.com/zbentley/classeur-downloader</a>.</p>
 <h1>Installation</h1><p>You can install the downloader script and library globally:</p>
@@ -194,7 +194,7 @@ cldownload save --help</code></pre><h3>Global Options</h3><p>The following optio
 </ul>
 </li>
 </ul>
-<h2>Module API</h2><p><code>cldownload</code> is a thin wrapper around the underlying <code>classeur-downloader</code> module API. That API can be used directly. For example, to get all files in a folder, do the following:</p>
+<h2><a href="http://zbentley.github.io/classeur-downloader/versions/latest/module-classeur-downloader.html">Module API</a></h2><p><code>cldownload</code> is a thin wrapper around the underlying <code>classeur-downloader</code> module API. That API can be used directly. For example, to get all files in a folder, do the following:</p>
 <pre class="prettyprint source lang-javascript"><code>// Saves all files contained in 'folder1' and 'folder2' in subdirectories of mydir/ with those same names:
 downloader.saveTree({
     folders: ['folder1', 'folder2' ]
@@ -204,11 +204,12 @@ downloader.saveTree({
     markdown: true
 }, (error) => {
     if (error) throw error;
-});</code></pre><p>For complete documentation (generated via <a href="usejsdoc.org">JSDoc</a> embedded in this module's code), go to <a href="http://zbentley.github.io/classeur-downloader/versions/latest">GitHub pages</a>. For documentation on older or unreleased package versions, go <a href="http://zbentley.github.io/classeur-downloader">here</a>.</p>
-<h2>Using IDs</h2><p>The REST API operates only by ID. You cannot get any information by human-visible name; you have to use the object IDs of files and folders to retrieve them using <code>classeur-api-client</code>. The IDs of files are visible in the URI bar of Classeur (if you are using Classeur in a browser). IDs of other objects, including files, are visible via the 'properties' windows of those objects in the Classeur UI.</p>
-<h1>Making Changes</h1><p>See the <a href="https://github.com/zbentley/classeur-api-client/blob/master/doc/tutorials/DeveloperGuide.md">Developer's Guide</a> for more info.</p>
+});</code></pre><p>For complete documentation (generated via <a href="usejsdoc.org">JSDoc</a> embedded in this module's code), go to <a href="http://zbentley.github.io/classeur-downloader/versions/latest/module-classeur-downloader.html">GitHub pages</a>. For documentation on older or unreleased package versions, go <a href="http://zbentley.github.io/classeur-downloader">here</a>.</p>
+<h2>Using IDs</h2><p>The REST API operates only by ID. You cannot get any information by human-visible name; you have to use the object IDs of files and folders to retrieve them using <code>classeur-downloader</code>. The IDs of files are visible in the URI bar of Classeur (if you are using Classeur in a browser). IDs of other objects, including files, are visible via the 'properties' windows of those objects in the Classeur UI.</p>
+<h1>Making Changes</h1><p>See the <a href="https://github.com/zbentley/classeur-downloader/blob/master/doc/tutorials/DeveloperGuide.md">Developer's Guide</a> for more info.</p>
 <p>NPM package versions will follow <a href="http://semver.org/">Semantic Versioning</a>.</p>
-<h1>Bugs</h1><p>File a GitHub issue on the <a href="https://github.com/zbentley/classeur-api-client">main repository</a>.s</p></article>
+<h1>Bugs</h1><p>File a GitHub issue on the <a href="https://github.com/zbentley/classeur-downloader">main repository</a>.</p>
+<h1>Release Notes</h1><p>Release notes are available <a href="http://zbentley.github.io/classeur-downloader/versions/latest">here</a>, under the &quot;Release Notes&quot; heading.</p></article>
     </section>
 
 
@@ -256,7 +257,7 @@ downloader.saveTree({
 <span class="jsdoc-message">
 	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a>
 	
-		on Tue Jan 19th 2016
+		on Thu Jan 21st 2016
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>

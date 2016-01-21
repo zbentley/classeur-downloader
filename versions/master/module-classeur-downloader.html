@@ -81,7 +81,7 @@
     <div class="container-overview">
     
         
-            <div class="description"><p>Module for downloading or listing files and folders from <a href="http://classeur.io/">Classeur</a>.</p></div>
+            <div class="description"><p>Module for downloading and listing files and folders stored in <a href="http://classeur.io/">Classeur</a>.</p></div>
         
 
         
@@ -119,8 +119,8 @@
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="-_Users_zbentley_Desktop_classeur_classeur-downloader_classeur-downloader.js.html">/Users/zbentley/Desktop/classeur/classeur-downloader/classeur-downloader.js</a>,
-				 <a href="-_Users_zbentley_Desktop_classeur_classeur-downloader_classeur-downloader.js.html#sunlight-1-line-13">line 13</a>
+				<a href="-_Users_zbentley_Desktop_classeur_downloader_classeur-downloader.js.html">/Users/zbentley/Desktop/classeur/downloader/classeur-downloader.js</a>,
+				 <a href="-_Users_zbentley_Desktop_classeur_downloader_classeur-downloader.js.html#sunlight-1-line-13">line 13</a>
 			</li>
 		</ul>
 	</dd>
@@ -136,7 +136,7 @@
 			
 			<li><p>The <a href="https://github.com/zbentley/classeur-downloader">source code</a> on GitHub.</p></li>
 			
-			<li><p>The <a href="http://zbentley.github.io/classeur-api-client/versions/latest/index.html">classeur-api-client</a> module (which <code>classeur-downloader</code> is based on) for a lower-level way to interact with the Classeur API.</p></li>
+			<li><p>The <a href="http://zbentley.github.io/classeur-api-client/versions/latest">classeur-api-client</a> module (which <code>classeur-downloader</code> is built around) for a lower-level way to interact with the Classeur API.</p></li>
 			</ul>
 	</dd>
 	
@@ -152,7 +152,7 @@
     
     <pre class="sunlight-highlight-javascript">npm install classeur-downloader</pre>
 
-        <p class="code-caption">Saving a Single File's Markdown Content</p>
+        <p class="code-caption">Saving a single file's markdown content</p>
     
     <pre class="sunlight-highlight-javascript">const downloader = require(&#x27;classeur-downloader&#x27;);
 downloader.saveSingleFile({
@@ -165,7 +165,7 @@ downloader.saveSingleFile({
     if (error) throw error;
 });</pre>
 
-        <p class="code-caption">Saving Directories</p>
+        <p class="code-caption">Saving directories</p>
     
     <pre class="sunlight-highlight-javascript">// Saves all files contained in &#x27;folder1&#x27; and &#x27;folder2&#x27; in subdirectories of mydir/ with those same names:
 downloader.saveTree({
@@ -337,8 +337,8 @@ downloader.saveTree({
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="-_Users_zbentley_Desktop_classeur_classeur-downloader_classeur-downloader.js.html">/Users/zbentley/Desktop/classeur/classeur-downloader/classeur-downloader.js</a>,
-				 <a href="-_Users_zbentley_Desktop_classeur_classeur-downloader_classeur-downloader.js.html#sunlight-1-line-340">line 340</a>
+				<a href="-_Users_zbentley_Desktop_classeur_downloader_classeur-downloader.js.html">/Users/zbentley/Desktop/classeur/downloader/classeur-downloader.js</a>,
+				 <a href="-_Users_zbentley_Desktop_classeur_downloader_classeur-downloader.js.html#sunlight-1-line-339">line 339</a>
 			</li>
 		</ul>
 	</dd>
@@ -367,7 +367,7 @@ downloader.saveTree({
     
         <h5>Example</h5>
         
-        <p class="code-caption">Save Markdown Content to a Path</p>
+        <p class="code-caption">Saving a single file's markdown content</p>
     
     <pre class="sunlight-highlight-javascript">const downloader = require(&#x27;classeur-downloader&#x27;);
 downloader.saveSingleFile({
@@ -517,8 +517,8 @@ If the <code>options.byId</code> is <code>true</code>, files and folders' root n
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="-_Users_zbentley_Desktop_classeur_classeur-downloader_classeur-downloader.js.html">/Users/zbentley/Desktop/classeur/classeur-downloader/classeur-downloader.js</a>,
-				 <a href="-_Users_zbentley_Desktop_classeur_classeur-downloader_classeur-downloader.js.html#sunlight-1-line-316">line 316</a>
+				<a href="-_Users_zbentley_Desktop_classeur_downloader_classeur-downloader.js.html">/Users/zbentley/Desktop/classeur/downloader/classeur-downloader.js</a>,
+				 <a href="-_Users_zbentley_Desktop_classeur_downloader_classeur-downloader.js.html#sunlight-1-line-315">line 315</a>
 			</li>
 		</ul>
 	</dd>
@@ -547,7 +547,7 @@ If the <code>options.byId</code> is <code>true</code>, files and folders' root n
     
         <h5>Examples</h5>
         
-        <p class="code-caption">Saving Files by ID</p>
+        <p class="code-caption">Saving files by ID</p>
     
     <pre class="sunlight-highlight-javascript">// Assume the folder with ID &#x27;abcd&#x27; contains files with the IDs &#x27;foo&#x27;, &#x27;bar&#x27;, and &#x27;baz&#x27;.
 const downloader = require(&#x27;classeur-downloader&#x27;);
@@ -567,7 +567,7 @@ downloader.saveTree({
 //        \_ bar.json
 //        \_ baz.json</pre>
 
-        <p class="code-caption">Saving Markdown Content</p>
+        <p class="code-caption">Saving markdown content</p>
     
     <pre class="sunlight-highlight-javascript">// Assume the folder with ID &#x27;abcd&#x27; has the UI-visible name &#x27;My Folder&#x27;.
 // Assume it contains two files with IDs &#x27;foo&#x27; and &#x27;bar&#x27;, and the names &#x27;My Stuff&#x27; and &#x27;My Other Stuff&#x27;.
@@ -721,8 +721,8 @@ downloader.saveTree({
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="-_Users_zbentley_Desktop_classeur_classeur-downloader_classeur-downloader.js.html">/Users/zbentley/Desktop/classeur/classeur-downloader/classeur-downloader.js</a>,
-				 <a href="-_Users_zbentley_Desktop_classeur_classeur-downloader_classeur-downloader.js.html#sunlight-1-line-271">line 271</a>
+				<a href="-_Users_zbentley_Desktop_classeur_downloader_classeur-downloader.js.html">/Users/zbentley/Desktop/classeur/downloader/classeur-downloader.js</a>,
+				 <a href="-_Users_zbentley_Desktop_classeur_downloader_classeur-downloader.js.html#sunlight-1-line-270">line 270</a>
 			</li>
 		</ul>
 	</dd>
@@ -831,8 +831,8 @@ downloader.saveTree({
 
             <td class="description last"><p>An throwable Error (or subclass thereof) if an error occurrend.</p>
 <ul>
-<li>For errors in writing files, <code>error</code> may be any of the errors raised by the <a href="https://nodejs.org/api/fs.html"><code>fs</code></a> module.</li>
-<li>For errors retrieving data from the Classeur API, <code>error</code> may be one of the Error subclasses used by <a href="http://zbentley.github.io/classeur-api-client/versions/latest/index.html">classeur-api-client</a>. Errors will be supplied to <code>CompletionCallback</code>s in the same way they will be supplied to <a href="http://zbentley.github.io/classeur-api-client/versions/latest/module-classeur-api-client.html#.ScrubbedCallback">ClasseurClient~ScrubbedCallback</a>s.</li>
+<li>For errors in writing files, <code>error</code> may be any of the errors raised by the <a href="https://nodejs.org/api/fs.html">fs</a> module.</li>
+<li>For errors retrieving data from the Classeur API, <code>error</code> may be one of the Error subclasses used by <a href="http://zbentley.github.io/classeur-api-client/versions/latest">classeur-api-client</a>. Errors will be supplied to <code>CompletionCallback</code>s in the same way they will be supplied to <a href="http://zbentley.github.io/classeur-api-client/versions/latest/module-classeur-api-client.html#.ScrubbedCallback">ClasseurClient~ScrubbedCallback</a>s.</li>
 <li><code>error</code> will always be <code>null</code> (not <code>undefined</code> or another falsy value) if no error occurred.</li>
 </ul></td>
         </tr>
@@ -912,8 +912,8 @@ downloader.saveTree({
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="-_Users_zbentley_Desktop_classeur_classeur-downloader_classeur-downloader.js.html">/Users/zbentley/Desktop/classeur/classeur-downloader/classeur-downloader.js</a>,
-				 <a href="-_Users_zbentley_Desktop_classeur_classeur-downloader_classeur-downloader.js.html#sunlight-1-line-255">line 255</a>
+				<a href="-_Users_zbentley_Desktop_classeur_downloader_classeur-downloader.js.html">/Users/zbentley/Desktop/classeur/downloader/classeur-downloader.js</a>,
+				 <a href="-_Users_zbentley_Desktop_classeur_downloader_classeur-downloader.js.html#sunlight-1-line-254">line 254</a>
 			</li>
 		</ul>
 	</dd>
@@ -1155,7 +1155,6 @@ All options used by <a href="module-classeur-downloader.html#~Options:Global">mo
 
             <td class="description last"><p>Whether or not to write markdown content for files.</p>
 <ul>
-<li>If <code>options.folders</code> is not supplied or is empty, this option has no effect.</li>
 <li>If <code>true</code>, saved files' content will be the markdown content of Classeur documents.</li>
 <li>If <code>false</code>, files' content will be their full JSON data from Classeur. Full JSON data objects include markdown content and other fields, and will likely not be able to be opened directly in a Markdown editor.</li>
 </ul></td>
@@ -1241,8 +1240,8 @@ All options used by <a href="module-classeur-downloader.html#~Options:Global">mo
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="-_Users_zbentley_Desktop_classeur_classeur-downloader_classeur-downloader.js.html">/Users/zbentley/Desktop/classeur/classeur-downloader/classeur-downloader.js</a>,
-				 <a href="-_Users_zbentley_Desktop_classeur_classeur-downloader_classeur-downloader.js.html#sunlight-1-line-223">line 223</a>
+				<a href="-_Users_zbentley_Desktop_classeur_downloader_classeur-downloader.js.html">/Users/zbentley/Desktop/classeur/downloader/classeur-downloader.js</a>,
+				 <a href="-_Users_zbentley_Desktop_classeur_downloader_classeur-downloader.js.html#sunlight-1-line-223">line 223</a>
 			</li>
 		</ul>
 	</dd>
@@ -1382,6 +1381,8 @@ All options used by <a href="module-classeur-downloader.html#~Options:Global">mo
             
                 <td class="default">
                 
+                    options.files[0]
+                
                 </td>
             
 
@@ -1509,8 +1510,8 @@ All options used by <a href="module-classeur-downloader.html#~Options:Global">mo
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="-_Users_zbentley_Desktop_classeur_classeur-downloader_classeur-downloader.js.html">/Users/zbentley/Desktop/classeur/classeur-downloader/classeur-downloader.js</a>,
-				 <a href="-_Users_zbentley_Desktop_classeur_classeur-downloader_classeur-downloader.js.html#sunlight-1-line-242">line 242</a>
+				<a href="-_Users_zbentley_Desktop_classeur_downloader_classeur-downloader.js.html">/Users/zbentley/Desktop/classeur/downloader/classeur-downloader.js</a>,
+				 <a href="-_Users_zbentley_Desktop_classeur_downloader_classeur-downloader.js.html#sunlight-1-line-241">line 241</a>
 			</li>
 		</ul>
 	</dd>
@@ -1807,8 +1808,8 @@ All options used by <a href="module-classeur-downloader.html#~Options:Global">mo
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="-_Users_zbentley_Desktop_classeur_classeur-downloader_classeur-downloader.js.html">/Users/zbentley/Desktop/classeur/classeur-downloader/classeur-downloader.js</a>,
-				 <a href="-_Users_zbentley_Desktop_classeur_classeur-downloader_classeur-downloader.js.html#sunlight-1-line-211">line 211</a>
+				<a href="-_Users_zbentley_Desktop_classeur_downloader_classeur-downloader.js.html">/Users/zbentley/Desktop/classeur/downloader/classeur-downloader.js</a>,
+				 <a href="-_Users_zbentley_Desktop_classeur_downloader_classeur-downloader.js.html#sunlight-1-line-211">line 211</a>
 			</li>
 		</ul>
 	</dd>
@@ -1875,7 +1876,7 @@ All options used by <a href="module-classeur-downloader.html#~Options:Global">mo
 <span class="jsdoc-message">
 	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a>
 	
-		on Tue Jan 19th 2016
+		on Thu Jan 21st 2016
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>
