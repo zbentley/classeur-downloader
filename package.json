@@ -25,6 +25,9 @@
   "bin": {
     "cldownload": "./bin/cldownload.js"
   },
+  "engines" : {
+    "node" : ">=5.0"
+  },
   "name": "classeur-downloader",
   "repository": {
     "type": "git",
