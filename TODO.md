@@ -9,6 +9,8 @@
 - Progress notification/verbosity => options.verbose.
 - Make destination optional: autocreate based on IDs, presume ./
 - Handle existing paths that are files when they should be directories and vice versa.
+- Support older versions of node (babel/traceur?)
+- Support global install routing: https://github.com/js-cli/js-liftoff 
 - Documentation:
 	- Readme index
 	- Autogenerate CLI documentation from flags or vica versa.
