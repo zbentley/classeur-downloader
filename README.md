@@ -114,9 +114,11 @@ The following options apply to all subcommands and should be specified before th
 
 ## [Module API](http://zbentley.github.io/classeur-downloader/versions/latest/module-classeur-downloader.html)
 
-`cldownload` is a thin wrapper around the underlying `classeur-downloader` module API. That API can be used directly. For example, to get all files in a folder, do the following:
+`cldownload` is a thin wrapper around the underlying `classeur-downloader` [module API](http://zbentley.github.io/classeur-downloader/versions/latest/module-classeur-downloader.html). That API can be used directly. For example, to get all files in a folder, do the following:
 
 ```javascript
+const downloader = require('classeur-downloader');
+
 // Saves all files contained in 'folder1' and 'folder2' in subdirectories of mydir/ with those same names:
 downloader.saveTree({
 	folders: ['folder1', 'folder2' ]
