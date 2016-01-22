@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>classeur-downloader Index</title>
+
+	<!--[if lt IE 9]>
+	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+	<link type="text/css" rel="stylesheet" href="styles/sunlight.default.css">
+
+	<link type="text/css" rel="stylesheet" href="styles/site.united.css">
+
+</head>
+
+<body>
+
+<div class="navbar navbar-default navbar-fixed-top navbar-inverse">
+<div class="container">
+	<div class="navbar-header">
+		<a class="navbar-brand" href="index.html">classeur-downloader</a>
+		<button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#topNavigation">
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+        </button>
+	</div>
+	<div class="navbar-collapse collapse" id="topNavigation">
+		<ul class="nav navbar-nav">
+			
+			<li class="dropdown">
+				<a href="modules.list.html" class="dropdown-toggle" data-toggle="dropdown">Modules<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="module-classeur-downloader.html">classeur-downloader</a></li>
+				</ul>
+			</li>
+			
+			<li class="dropdown">
+				<a href="tutorials.list.html" class="dropdown-toggle" data-toggle="dropdown">Tutorials<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="tutorial-DeveloperGuide.html">Developer's Guide</a></li><li><a href="tutorial-VersionIndex.html">Other Versions</a></li>
+				</ul>
+			</li>
+			
+		</ul>
+		<div class="col-sm-3 col-md-3">
+            <form class="navbar-form" role="search">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Search" name="q" id="search-input">
+                    <div class="input-group-btn">
+                        <button class="btn btn-default" id="search-submit"><i class="glyphicon glyphicon-search"></i></button>
+                    </div>
+                </div>
+            </form>
+        </div>
+	</div>
+
+</div>
+</div>
+
+
+<div class="container" id="toc-content">
+<div class="row">
+
+	
+	<div class="col-md-8">
+	
+		<div id="main">
+			
+
+	
+	
+
+
+
+    <h3>classeur-downloader 0.1.2</h3>
+
+
+
+
+
+
+
+
+
+	
+	
+
+
+
+
+
+    <section class="readme-section">
+        <article><h1>classeur-downloader</h1><p>Script to download files and folders from http://classeur.io/</p>
+<p><a href="http://classeur.io/">Classeur</a> is an online writing and collaboration platform by the creators of <a href="https://stackedit.io/">StackEdit</a>. Documents created and shared within Classeur are stored in HTML local storage and in Classeur's cloud/servers. <code>classeur-downloader</code> can be used to download files and folders out of Classeur and onto a local filesystem.</p>
+<p>This module is built around <a href="http://zbentley.github.io/classeur-api-client/versions/latest">classeur-api-client</a>.</p>
+<h1>Documentation and Sources</h1><p>Documentation for this module (both the module API and the <code>cldownload</code> script) is available on <a href="http://zbentley.github.io/classeur-downloader/versions/latest">GitHub pages</a>. For documentation on older or unreleased package versions, go <a href="http://zbentley.github.io/classeur-downloader">here</a>.</p>
+<p>Source code for this package is avaiable at <a href="https://github.com/zbentley/classeur-downloader">https://github.com/zbentley/classeur-downloader</a>.</p>
+<h1>Installation</h1><p>You can install the downloader script and library globally:</p>
+<pre class="prettyprint source lang-bash"><code>npm install -g classeur-downloader
+cldownload --help</code></pre><p>...Or locally:</p>
+<pre class="prettyprint source lang-bash"><code>npm install classeur-downloader
+./node_modules/.bin/cldownload --help</code></pre><h1>Usage</h1><h2>Command-line Interface</h2><pre class="prettyprint source lang-bash"><code>cldownload [global options] list|save [subcommand options]</code></pre><p>The <code>cldownload</code> CLI operates over any number of Classeur files or folders, has two modes of operation: <code>list</code> (display a tree of file names and IDs retrieved) and <code>save</code> (save files and folders to the filesystem).</p>
+<p>The below examples all assume you are using a globally-installed copy of <code>classeur-downloader</code>. If you are running it locally, use the local path (usually <code>node_modules/.bin/cldownloader</code>) where appropriate.</p>
+<p>Options are detected by the shortest unambiguous substring, so <code>--file</code> works just as well as <code>--files</code>.</p>
+<p>All options have short versions or synonyms. Use the various <code>--help</code> flags to see valid option names.</p>
+<h3>Examples</h3><pre class="prettyprint source lang-perl"><code># Save markdown content of all files in two folders to a directory:
+cldownload --user-id 'my id' --api-key 'my key' save --folders 'folder id 1' 'folder id 2' --save-path /path/to/dir --markdown
+
+# Save the full Classeur API metadata and data for a file into a single JSON document:
+cldownload --user-id 'my id' --api-key 'my key' save --file 'file id' --save-path /path/to/a/file.json
+
+# Print out a tree of all files in a given folder:
+cldownload --user-id 'my id' --api-key 'my key' list --folder 'folder id'
+
+# Global help:
+cldownload --help
+
+# Subcommand-specific help:
+cldownload list --help
+cldownload save --help</code></pre><h3>Global Options</h3><p>The following options apply to all subcommands and should be specified before the subcommand name.</p>
+<ul>
+<li><code>--user-id ID</code> (String)<ul>
+<li>Classeur user ID to use when connecting to the REST API.</li>
+</ul>
+</li>
+<li><code>--api-key KEY</code> (String)<ul>
+<li>Classeur user API key (visible only once, in the web UI wen generated) to use when connecting to the REST API.</li>
+</ul>
+</li>
+<li><code>--help</code><ul>
+<li>Print the help message for global options and subcommand names, and then exit.</li>
+</ul>
+</li>
+<li><code>--version</code><ul>
+<li>Print the version of the <code>cldownload</code> script and associated NPM package, and then exit.</li>
+</ul>
+</li>
+</ul>
+<h3><code>'save'</code> Subcommand Options</h3><ul>
+<li><code>--destination DESTINATION</code> (Path; must be nonexistent or an empty directory)<ul>
+<li>Path in which to save downloaded data. If more than one file and/or folder is specified for download, or if <code>DESTINATION</code> ends with a trailing slash, then <code>DESTINATION</code> must be an existent, writable, directory. Otherwise, it must be a nonexistent path inside an existent, writable directory.</li>
+<li>If <code>--overwrite</code> is not set and <code>DESTINATION</code> is a directpry, <code>DESTINATION</code> should empty; otherwise name collisions will cause an error, and partial results may be written into the directory.</li>
+</ul>
+</li>
+<li><code>--folders FOLDER_ID_1 FOLDER_ID_2 ...</code> (One or more strings)<ul>
+<li>Folder(s) to download. Each folder will be created (in parallel) inside of <code>DESTINATION</code>, with either the name visible in the Classeur UI or the folder ID (depending on the <code>--by-id</code> setting). All files inside each folder will then be downloaded into that directory.</li>
+</ul>
+</li>
+<li><code>--files FILE_ID_1 FILE_ID_2 ...</code> (One or more strings)<ul>
+<li>File(s) to download. Each file will be downloaded (in parallel) and placed in the appropriate folder inside of <code>DESTINATION</code>, with either the name visible in the Classeur UI or the folder ID (depending on the <code>--by-id</code> setting).</li>
+<li>If a single file ID and no folders are supplied to <code>cldownload</code>, <code>DESTINATION</code> will be written to as a file, not a directory, unless <code>DESTINATION</code> ends with a trailing slash. In this mode, a file extension (<code>.md</code> or <code>.json</code>) will not be appended to the downloaded file.</li>
+</ul>
+</li>
+<li><code>--by-id</code><ul>
+<li>If set, files and folders will be created in <code>DESTINATION</code> with names corresponding to their Classeur IDs rather than their UI-visible names.</li>
+</ul>
+</li>
+<li><code>--overwrite</code><ul>
+<li>If set, files with the same names as ones already in <code>DESTINATION</code> will be overwritten.</li>
+<li>If not set, errors will be raised when name conflicts occur. However, partial results may still be written to paths without name conflicts.</li>
+</ul>
+</li>
+<li><code>--markdown</code><ul>
+<li>If set, extensions of downloaded files will be <code>.md</code>, and the content of each downloaded file will be the markdown content of the Classeur document that file represents, as visible in the UI.</li>
+<li>If not set, extensions of downloaded files will be <code>.json</code>, and the content of each downloaded file will be the full JSON information for that document from the Classeur REST API. The full information contains the markdown content as well as other metadata fields, so it cannot be opened in another Markdown editor without modification.</li>
+<li>File extensions are not added if the only a single file is being downloaded directly to a file path, and is not being placed in a directory. See <code>--files</code> for more info.</li>
+</ul>
+</li>
+<li><code>--help</code><ul>
+<li>Print the help message for the <code>save</code> subcommand, and then exit.</li>
+</ul>
+</li>
+</ul>
+<h3><code>'list'</code> Subcommand Options</h3><ul>
+<li><code>--help</code><ul>
+<li>Print the help message for the <code>list</code> subcommand, and then exit.</li>
+</ul>
+</li>
+<li><code>--folders FOLDER_ID_1 FOLDER_ID_2 ...</code> (One or more strings)<ul>
+<li>Folder(s) to list. Each folder will be printed at the root of a tree of the files it contains.</li>
+<li>How each folder is displayed depends on whether or not <code>--by-id</code> is set.</li>
+</ul>
+</li>
+<li><code>--files FILE_ID_1 FILE_ID_2 ...</code> (One or more strings)<ul>
+<li>File(s) to list. Each file will be printed out at the root level, alongside any folders. Folders' content will be nested below them, but explicitly specified files will not (even if a folder which also contains an explicitly specified file is also specified).</li>
+<li>How each file is displayed depends on whether or not <code>--by-id</code> is set.</li>
+</ul>
+</li>
+<li><code>--by-id</code><ul>
+<li>If set, files and folders will be displayed with their Classeur object IDs first, and their UI-visible names in parentheses.</li>
+<li>If not set, files and folders will be displayed with their UI-visible names first, and their Classeur object IDs in parentheses.</li>
+</ul>
+</li>
+</ul>
+<h2><a href="http://zbentley.github.io/classeur-downloader/versions/latest/module-classeur-downloader.html">Module API</a></h2><p><code>cldownload</code> is a thin wrapper around the underlying <code>classeur-downloader</code> <a href="http://zbentley.github.io/classeur-downloader/versions/latest/module-classeur-downloader.html">module API</a>. That API can be used directly. For example, to get all files in a folder, do the following:</p>
+<pre class="prettyprint source lang-javascript"><code>const downloader = require('classeur-downloader');
+
+// Saves all files contained in 'folder1' and 'folder2' in subdirectories of mydir/ with those same names:
+downloader.saveTree({
+    folders: ['folder1', 'folder2' ]
+    userId: 'user ID',
+    apiKey: 'api key',
+    path: 'mydir/',
+    markdown: true
+}, (error) => {
+    if (error) throw error;
+});</code></pre><p>For complete documentation (generated via <a href="usejsdoc.org">JSDoc</a> embedded in this module's code), go to <a href="http://zbentley.github.io/classeur-downloader/versions/latest/module-classeur-downloader.html">GitHub pages</a>. For documentation on older or unreleased package versions, go <a href="http://zbentley.github.io/classeur-downloader">here</a>.</p>
+<h2>Using IDs</h2><p>The REST API operates only by ID. You cannot get any information by human-visible name; you have to use the object IDs of files and folders to retrieve them using <code>classeur-downloader</code>. The IDs of files are visible in the URI bar of Classeur (if you are using Classeur in a browser). IDs of other objects, including files, are visible via the 'properties' windows of those objects in the Classeur UI.</p>
+<h1>Making Changes</h1><p>See the <a href="https://github.com/zbentley/classeur-downloader/blob/master/doc/tutorials/DeveloperGuide.md">Developer's Guide</a> for more info.</p>
+<p>NPM package versions will follow <a href="http://semver.org/">Semantic Versioning</a>.</p>
+<h1>Bugs</h1><p>File a GitHub issue on the <a href="https://github.com/zbentley/classeur-downloader">main repository</a>.</p>
+<h1>Release Notes</h1><p>Release notes are available <a href="http://zbentley.github.io/classeur-downloader/versions/latest">here</a>, under the &quot;Release Notes&quot; heading.</p></article>
+    </section>
+
+
+
+
+
+
+
+		</div>
+	</div>
+
+	<div class="clearfix"></div>
+
+	
+		<div class="col-md-3">
+			<div id="toc" class="col-md-3 hidden-xs hidden-sm hidden-md"></div>
+		</div>
+	
+
+</div>
+</div>
+
+<div class="modal fade" id="searchResults">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Search results</h4>
+      </div>
+      <div class="modal-body"></div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div>
+
+<footer>
+
+
+	<span class="copyright">
+	Copyright Zac Bentley © 2015-2016
+	</span>
+
+<span class="jsdoc-message">
+	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a>
+	
+		on Fri Jan 22nd 2016
+	
+	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
+</span>
+</footer>
+
+<script src="scripts/docstrap.lib.js"></script>
+<script src="scripts/toc.js"></script>
+<script type="text/javascript" src="scripts/fulltext-search-ui.js"></script>
+
+<script>
+$( function () {
+	$( "[id*='$']" ).each( function () {
+		var $this = $( this );
+
+		$this.attr( "id", $this.attr( "id" ).replace( "$", "__" ) );
+	} );
+
+	$( ".tutorial-section pre, .readme-section pre" ).each( function () {
+		var $this = $( this );
+
+		var example = $this.find( "code" );
+		exampleText = example.html();
+		var lang = /{@lang (.*?)}/.exec( exampleText );
+		if ( lang && lang[1] ) {
+			exampleText = exampleText.replace( lang[0], "" );
+			example.html( exampleText );
+			lang = lang[1];
+		} else {
+			var langClassMatch = example.parent()[0].className.match(/lang\-(\S+)/);
+			lang = langClassMatch ? langClassMatch[1] : "javascript";
+		}
+
+		if ( lang ) {
+
+			$this
+			.addClass( "sunlight-highlight-" + lang )
+			.addClass( "linenums" )
+			.html( example.html() );
+
+		}
+	} );
+
+	Sunlight.highlightAll( {
+		lineNumbers : true,
+		showMenu : true,
+		enableDoclinks : true
+	} );
+
+	$.catchAnchorLinks( {
+        navbarOffset: 10
+	} );
+	$( "#toc" ).toc( {
+		anchorName  : function ( i, heading, prefix ) {
+			var id = $( heading ).attr( "id" );
+			return id && id.replace(/\~/g, '-inner-').replace(/\./g, '-static-') || ( prefix + i );
+		},
+		selectors   : "#toc-content h1,#toc-content h2,#toc-content h3,#toc-content h4",
+		showAndHide : false,
+		smoothScrolling: true
+	} );
+
+	$( "#main span[id^='toc']" ).addClass( "toc-shim" );
+	$( '.dropdown-toggle' ).dropdown();
+
+    $( "table" ).each( function () {
+      var $this = $( this );
+      $this.addClass('table');
+    } );
+
+} );
+</script>
+
+
+
+<!--Navigation and Symbol Display-->
+
+
+<!--Google Analytics-->
+
+
+<script type="text/javascript">
+	$(document).ready(function() {
+		SearcherDisplay.init();
+	});
+</script>
+
+</body>
+</html>
