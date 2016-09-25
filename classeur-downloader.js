@@ -1,4 +1,4 @@
-'use strict';
+'use strict'
 
 const _ = require('lodash'),
     ApiClient = require('classeur-api-client'),
@@ -6,9 +6,9 @@ const _ = require('lodash'),
     fs = require('fs-extra'),
     pathMod = require('path'),
     pathJoin = _.spread(pathMod.join),
-    TreeManipulator = require('tree-manipulator');
+    TreeManipulator = require('tree-manipulator')
 
-// const eyes = require('eyes'), p = eyes.inspect.bind(eyes);
+// const eyes = require('eyes'), p = eyes.inspect.bind(eyes)
 
 /**
 * Module for downloading and listing files and folders stored in [Classeur](http://classeur.io/).
@@ -16,7 +16,7 @@ const _ = require('lodash'),
 * @example <caption>Installation</caption>
 * npm install classeur-downloader
 * @example <caption>Saving a single file's markdown content</caption>
-* const downloader = require('classeur-downloader');
+* const downloader = require('classeur-downloader')
 * downloader.saveSingleFile({
 *     file: 'some file ID',
 *     userId: 'user ID',
@@ -24,8 +24,8 @@ const _ = require('lodash'),
 *     path: '/some/path.md',
 *     markdown: true
 * }, (error) => {
-*     if (error) throw error;
-* });
+*     if (error) throw error
+* })
 * @example <caption>Saving directories</caption>
 * // Saves all files contained in 'folder1' and 'folder2' in subdirectories of mydir/ with those same names:
 * downloader.saveTree({
@@ -35,8 +35,8 @@ const _ = require('lodash'),
 *     path: 'mydir/',
 *     markdown: true
 * }, (error) => {
-*     if (error) throw error;
-* });
+*     if (error) throw error
+* })
 * @see The [README](index.html) for an overview and more usage examples.
 * @see The [source code]{@link https://github.com/zbentley/classeur-downloader} on GitHub.
 * @see The [classeur-api-client](http://zbentley.github.io/classeur-api-client/versions/latest) module (which `classeur-downloader` is built around) for a lower-level way to interact with the Classeur API.
@@ -48,20 +48,20 @@ function getTree(byId, print, items) {
     let props = {
         identifierProperty: byId ? 'id' : 'name',
         nestedNodesProperty: 'files',
-    };
+    }
     if ( print ) {
         props.valueGetter = function(obj, property) {
             // If we're getting the value of a node, and not its children,
             // stringify it for pretty printing.
             if (property === this.identifierProperty) {
-                return APIobjectToString(obj, byId);
+                return APIobjectToString(obj, byId)
             } else {
-                return obj[property];
+                return obj[property]
             }
-        };
+        }
     }
 
-    let tm  = new TreeManipulator(props);
+    let tm  = new TreeManipulator(props)
     // If contents are supplied, bind the instance methods used by this script
     // to the contents to prevent having to pass around tree manipulators *and*
     // contents everywhere.
@@ -69,27 +69,27 @@ function getTree(byId, print, items) {
         _.mixin(tm, {
             print: _.partial(tm.print, items),
             findNode: _.partialRight(tm.findNode, items)
-        });
+        })
     }
 
-    return tm;
+    return tm
 }
 
 function errorIfExists(path, cb) {
     fs.stat(path, (error, result) => {
         if (error && error.errno === -2) { //ENOENT
-            cb(null, result);
+            cb(null, result)
         } else {
-            cb(error || new Error(`File ${path} exists, and --overwrite is not set.`), null);
+            cb(error || new Error(`File ${path} exists, and --overwrite is not set.`), null)
         }
-    });
+    })
 }
 
 function getWriter(path, options, addExtension, content) {
-    const writefunc = _.isString(content) ? fs.outputFile : fs.outputJson;
-    path = pathJoin(path);
+    const writefunc = _.isString(content) ? fs.outputFile : fs.outputJson
+    path = pathJoin(path)
     if ( addExtension ) {
-        path += _.isString(content) ? '.md' : '.json';
+        path += _.isString(content) ? '.md' : '.json'
     }
 
     return options.overwrite
@@ -97,7 +97,7 @@ function getWriter(path, options, addExtension, content) {
         : _.partial(async.series, [
             _.partial(errorIfExists, path),
             _.partial(writefunc, path, content),
-        ]);
+        ])
 }
 
 // For each item in the tree, either download it, or make the folder and recurse.
@@ -106,106 +106,106 @@ function makeFolderOrSaveFile(conn, tree, options, id, cb) {
         kids = tree.nestedNodesProperty,
         node = found.node,
         parallel = [],
-        markdown = options.markdown;
+        markdown = options.markdown
 
-    let path = found.path;
+    let path = found.path
 
     if ( _.has(node, kids) ) {
-        // Handle creation of folder metadata file; only applies in JSON mode,
+        // Handle creation of folder metadata file only applies in JSON mode,
         // and only applies to non-root nodes.
         if ( options.folderMetadata && path.length > 1 ) {
-            path[path.length - 1] += '.folder_metadata.json';
-            parallel.push(getWriter(path, options, false, node));
+            path[path.length - 1] += '.folder_metadata.json'
+            parallel.push(getWriter(path, options, false, node))
         }
 
         parallel.push(_.partial(async.each, node[kids], (child, cb) => {
-            makeFolderOrSaveFile(conn, tree, options, child[tree.identifierProperty], cb);
-        }));
+            makeFolderOrSaveFile(conn, tree, options, child[tree.identifierProperty], cb)
+        }))
     } else {
         parallel.push(_.partial(async.waterfall,[
             _.bind(conn.getFile, conn, node.id),
             function(result, cb) {
-                getWriter(path, options, options.addExtension, markdown ? result.content.text : result)(cb);
+                getWriter(path, options, options.addExtension, markdown ? result.content.text : result)(cb)
             }
-        ]));
+        ]))
     }
 
-    async.parallel(parallel, cb);
+    async.parallel(parallel, cb)
 }
 
 
 // Print a tree rooted at each folder and file. Printing the top-level tree
 // results in leading \____ parent relationships for no reason.
 function showTree(items, conn, options, cb) {
-    const tm = getTree(options.byId, true);
+    const tm = getTree(options.byId, true)
     // TODO group by files vs. folders.
-    _.forEach(_.sortBy(items, tm.identifierProperty), _.bind(tm.print, tm));
-    cb(null, null);
+    _.forEach(_.sortBy(items, tm.identifierProperty), _.bind(tm.print, tm))
+    cb(null, null)
 }
 
 function saveTree(items, conn, options, cb) {
-    const path = options.path;
+    const path = options.path
     makeFolderOrSaveFile(conn, getTree(options.byId, false, {
         id: path,
         name: path,
         files: items // top-level folders and manually-specified files
-    }), options, path, cb);
+    }), options, path, cb)
 }
 
 function APIobjectToString(object, byId) {
     if ( object.id || object.name ) {
-        let info = [object.id, object.name];
-        if ( byId ) info.reverse();
-        return `${info.pop()} (${info.pop()})`;
+        let info = [object.id, object.name]
+        if ( byId ) info.reverse()
+        return `${info.pop()} (${info.pop()})`
     } else {
-        return '';
+        return ''
     }
 }
 
 function getFilesAndFolders(options, func, cb) {
-    const conn = new ApiClient(options.userId, options.apiKey, options.host);
+    const conn = new ApiClient(options.userId, options.apiKey, options.host)
     async.parallel(
         [
-            (cb) => { conn.getFolders(options.folders, cb); },
-            (cb) => { conn.getFiles(options.files, cb); },
+            (cb) => { conn.getFolders(options.folders, cb) },
+            (cb) => { conn.getFiles(options.files, cb) },
         ],
         (error, result) => {
             if (error) {
                 if ( ! _.isError(error) ) {
-                    error = new Error(error);
+                    error = new Error(error)
                 }
-                cb(error, null);
+                cb(error, null)
             } else {
                 // _.flatten de-'segments' the array into a single list of files and folders.
-                func(_.flatten(result), conn, options, cb);
+                func(_.flatten(result), conn, options, cb)
             }
         }
-    );
+    )
 }
 
 function assertOptions(options, maxFiles, maxFolders) {
-    options.folders = options.folders || [];
-    options.files = options.files || [];
+    options.folders = options.folders || []
+    options.files = options.files || []
     if ( ! _.isUndefined(maxFiles) && options.files.length > maxFiles ) {
-        throw new Error(`Got ${options.files.length} files, but expected no more than ${maxFiles}:\n${options.files}`);
+        throw new Error(`Got ${options.files.length} files, but expected no more than ${maxFiles}:\n${options.files}`)
     }
 
     if ( ! _.isUndefined(maxFolders) && options.folders.length > maxFolders ) {
-        throw new Error(`Got ${options.folders.length} folders, but expected no more than ${maxFolders}:\n${options.folders}`);
+        throw new Error(`Got ${options.folders.length} folders, but expected no more than ${maxFolders}:\n${options.folders}`)
     }
 
     if ( _.isUndefined(options.addExtension) ) {
-        options.addExtension = true;
+        options.addExtension = true
     }
 
-    return options;
+    return options
 }
 
 function scrubCallback(cb) {
     return (error, result) => {
-        result = _.compact(_.flattenDeep(result));
-        cb(error || null, _.isEmpty(result) ? null : result);
-    };
+        result = _.compact(_.flattenDeep(result))
+        cb(error || null, _.isEmpty(result) ? null : result)
+    }
 }
 
 /**
@@ -257,7 +257,7 @@ function scrubCallback(cb) {
 * - For errors in writing files, `error` may be any of the errors raised by the [fs](https://nodejs.org/api/fs.html) module.
 * - For errors retrieving data from the Classeur API, `error` may be one of the Error subclasses used by [classeur-api-client](http://zbentley.github.io/classeur-api-client/versions/latest). Errors will be supplied to `CompletionCallback`s in the same way they will be supplied to [ClasseurClient~ScrubbedCallback](http://zbentley.github.io/classeur-api-client/versions/latest/module-classeur-api-client.html#.ScrubbedCallback)s.
 * - `error` will always be `null` (not `undefined` or another falsy value) if no error occurred.
-* @param {*?} result - Behavior of `result` is not defined; it should not be used. Will usually be `null`. May sometimes contain an array of partial result objects.
+* @param {*?} result - Behavior of `result` is not defined it should not be used. Will usually be `null`. May sometimes contain an array of partial result objects.
 */
 
 /**
@@ -268,7 +268,7 @@ function scrubCallback(cb) {
 * @param {module:classeur-downloader~CompletionCallback} callback - Called with an error, if one occurred, or `null` if all operations were successful.
 */
 module.exports.showTree = (options, cb) => {
-    getFilesAndFolders(assertOptions(options), showTree, scrubCallback(cb));
+    getFilesAndFolders(assertOptions(options), showTree, scrubCallback(cb))
 }
 
 /**
@@ -280,7 +280,7 @@ module.exports.showTree = (options, cb) => {
 *
 * @example <caption>Saving files by ID</caption>
 * // Assume the folder with ID 'abcd' contains files with the IDs 'foo', 'bar', and 'baz'.
-* const downloader = require('classeur-downloader');
+* const downloader = require('classeur-downloader')
 * downloader.saveTree({
 *     files: [ 'quux' ],
 *     folders: [ 'abcde' ],
@@ -288,7 +288,7 @@ module.exports.showTree = (options, cb) => {
 *     apiKey: 'api key',
 *     path: 'mydir/',
 *     folderMetadata: true
-* }, (error) => { if (error) throw error; });
+* }, (error) => { if (error) throw error })
 * // 'mydir' will now contain:
 * //    quux.json
 * //    abcde.folder_metadata.json
@@ -306,14 +306,14 @@ module.exports.showTree = (options, cb) => {
 *     apiKey: 'api key',
 *     path: 'mydir/'
 *     markdown: true
-* }, (error) => { if (error) throw error; });
+* }, (error) => { if (error) throw error })
 * // 'mydir' will now contain:
 * //    My Folder
 * //        \_ My Stuff.md
 * //        \_ My Other Stuff.md
 */
 module.exports.saveTree = (options, cb) => {
-    getFilesAndFolders(assertOptions(options), saveTree, scrubCallback(cb));
+    getFilesAndFolders(assertOptions(options), saveTree, scrubCallback(cb))
 }
 
 /**
@@ -322,28 +322,28 @@ module.exports.saveTree = (options, cb) => {
 * @param {module:classeur-downloader~Options:DownloadSingleFile} options
 * - `options.folders` may not be supplied to this function.
 * - `options.byId` is ignored by this function.
-* - File content will be saved directly to `options.path`; no folders or other metadata files will be created.
-* - File extensions (e.g. `.md`) will _not_ be added by SaveSingleFile; write the extension you want into `options.path` directly.
+* - File content will be saved directly to `options.path` no folders or other metadata files will be created.
+* - File extensions (e.g. `.md`) will _not_ be added by SaveSingleFile write the extension you want into `options.path` directly.
 * @param {module:classeur-downloader~CompletionCallback} callback - Called with an error, if one occurred, or `null` if all operations were successful.
 *
 * @example <caption>Saving a single file's markdown content</caption>
-* const downloader = require('classeur-downloader');
+* const downloader = require('classeur-downloader')
 * downloader.saveSingleFile({
 *     files: 'some file id',
 *     userId: 'user ID',
 *     apiKey: 'api key',
 *     path: 'myfile.markdown',
 *     markdown: true
-* }, (error) => { if (error) throw error; });
+* }, (error) => { if (error) throw error })
 */
 module.exports.saveSingleFile = (options, cb) => {
-    options = assertOptions(options, 1, 0);
+    options = assertOptions(options, 1, 0)
     const conn = new ApiClient(options.userId, options.apiKey, options.host),
-        ext = pathMod.parse(options.path).ext;
+        ext = pathMod.parse(options.path).ext
     async.waterfall([
         _.bind(conn.getFile, conn, options.file || options.files[0]),
         (result, cb) => {
-            getWriter([options.path], options, false, options.markdown ? result.content.text : result)(cb);
+            getWriter([options.path], options, false, options.markdown ? result.content.text : result)(cb)
         }
-    ], scrubCallback(cb));
+    ], scrubCallback(cb))
 }
