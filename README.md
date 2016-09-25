@@ -1,6 +1,7 @@
 # classeur-downloader
 
 Script to download files and folders from http://classeur.io/
+[![npm version](https://badge.fury.io/js/classeur-downloader.svg)](https://www.npmjs.com/package/classeur-downloader)
 
 [Classeur](http://classeur.io/) is an online writing and collaboration platform by the creators of [StackEdit](https://stackedit.io/). Documents created and shared within Classeur are stored in HTML local storage and in Classeur's cloud/servers. `classeur-downloader` can be used to download files and folders out of Classeur and onto a local filesystem.
 
