@@ -6,7 +6,6 @@
   "dependencies": {
     "classeur-api-client": "^0.3.1",
     "lodash": "^3.4.0 || ^4.0.0",
-    "pkginfo": "^0.4.0",
     "tree-manipulator": "^0.1.1"
   },
   "description": "Script to download files and folders from http://classeur.io/",
@@ -32,6 +31,7 @@
   },
   "preferGlobal": true,
   "devDependencies": {
+    "pkginfo": "^0.4.0",
     "eyes": "^0.1.8",
     "grunt": "^1.0.1",
     "grunt-contrib-clean": "^1.0.0",

@@ -1,5 +1,7 @@
 'use strict';
 
+require('pkginfo')(module)
+
 function versionIndexTemplate(path) {
     return {
         options: {
@@ -14,9 +16,9 @@ function versionIndexTemplate(path) {
 }
 
 function branchDocumentationTasks(target) {
-    const version = '<%= pkg.version %>',
-        name = '<%= pkg.name %>';
-    target = target || version;
+    const version = exports.version,
+        name = exports.name
+        target = target || version
     const path = `doc/generated/versions/${target}`;
     return {
         jsdoc: {
@@ -33,7 +35,7 @@ function branchDocumentationTasks(target) {
             }
         },
         copy: {
-            cwd: `${path}/${name}/${version}`,
+            cwd: `${path}/${name}/${target}`,
             expand: true,
             src: '**',
             dest: path,
