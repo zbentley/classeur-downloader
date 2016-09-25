@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>classeur-downloader Index</title>
+	<title>classeur-downloader Tutorial: Developer's Guide</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -29,6 +29,13 @@
 	</div>
 	<div class="navbar-collapse collapse" id="topNavigation">
 		<ul class="nav navbar-nav">
+			
+			<li class="dropdown">
+				<a href="modules.list.html" class="dropdown-toggle" data-toggle="dropdown">Modules<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="module-classeur-downloader.html">classeur-downloader</a></li>
+				</ul>
+			</li>
 			
 			<li class="dropdown">
 				<a href="tutorials.list.html" class="dropdown-toggle" data-toggle="dropdown">Tutorials<b class="caret"></b></a>
@@ -60,72 +67,35 @@
 <div class="row">
 
 	
-	<div class="col-md-8">
+	<div class="col-md-12">
 	
 		<div id="main">
-			
+			<section class="tutorial-section">
 
-	
-	
+<header>
+    
 
+    <h2>Developer's Guide</h2>
+</header>
 
+<article>
+    <h1>Developer's Guide</h1><p>Pull requests are welcome! Pull the <a href="https://github.com/zbentley/classeur-downloader">source code</a> and hack away.</p>
+<h2>Tests</h2><p>Tests are a work in progress now, and will be released soon.</p>
+<h2>Documentation</h2><h3>Building the Main Documentation</h3><p>Documentation is generated, and, optionally, pushed to GitHub pages via a <a href="gruntjs.com">grunt</a>-based build process. Generated documentation is placed in <code>doc/generated</code>. <strong>The <code>doc/generated</code> folder will be removed and re-created as part of any documentation build.</strong></p>
+<p>To generate documentation from the <a href="http://usejsdoc.org/">JSDoc</a> in the code, do <code>grunt doc:master</code> or <code>grunt doc:current-version</code>. The names of the two functions are a bit deceptive: both will generate documentation from the branch and version of the module from which you are running <code>grunt</code>. The difference is that the former places the documentation into the <code>doc/generated/master</code> file, and the latter places it in the <code>doc/generated/$version</code> file, where <code>$version</code> is the NPM package version from <code>package.json</code>.</p>
+<h3>Building the Version Index Documentation</h3><p><code>grunt doc:index</code> can be used to build just the documentation landing page, which contains links to multiple module versions' documentation. <code>grunt doc:index</code> is implied as part of all other <code>grunt doc</code> tasks.</p>
+<p>The index will live in <code>doc/generated/index.html</code>. Unless you build a version's documentation in addition to the index, links in the index will not work.</p>
+<h3>Pushing Documentation to GitHub Pages</h3><p>You can add <code>:push</code> to either the <code>doc:master</code> or <code>doc:current-version</code> Grunt task to push the resulting documentation product to GitHub pages, e.g. <code>grunt doc:master:push</code>.</p>
+<p>Before pushing, the build system will delete and re-create the index documentation (regardless of target), and documentation for the version-named (or <code>master</code>-named) folder you are targeting, depending on which Grunt task you're pushing with.</p>
+</article>
 
-
-
-
-
-
-
-
-
-	
-	
-
-
-
-
-
-    <section class="readme-section">
-        <article><h1>classeur-api-client</h1><p>This is the documentation landing page for <code>classeur-api-client</code>, a node.js client for the REST API of <a href="http://classeur.io/">http://classeur.io/</a>.</p>
-<p>Source code for this package is avaiable at <a href="https://github.com/zbentley/classeur-downloader">https://github.com/zbentley/classeur-downloader</a>.</p>
-<p>Select a version of this library below to get started.</p>
-<h1>Versions</h1><p>NPM package versions will follow <a href="http://semver.org/">Semantic Versioning</a>.</p>
-<p>Each link below will take you to the README for the given package version:</p>
-<ul>
-<li><a href="./versions/latest/index.html">latest stable</a></li>
-<li><a href="./versions/0.1.0/index.html">0.1.0</a> (links to 0.1.1 documentation)</li>
-<li><a href="./versions/0.1.1/index.html">0.1.1</a></li>
-<li><a href="./versions/0.1.2/index.html">0.1.2</a></li>
-<li><a href="./versions/master/index.html">development/unstable (master)</a></li>
-</ul>
-<h1>Release Notes</h1><h3>0.1.0</h3><ul>
-<li>Initial release.</li>
-</ul>
-<h3>0.1.1</h3><ul>
-<li>Fix a packaging bug that made <code>cldownload</code> inaccessible in some global installs.</li>
-</ul>
-<h3>0.1.2</h3><ul>
-<li>Fix <a href="https://github.com/zbentley/classeur-downloader/issues/1#">#1</a>: incompatibility with older NodeJS versions. Make node &gt;=5.0 dependency explicit.</li>
-<li>Add release notes.</li>
-<li>Misc documentation updates for readability. Fixed some broken links.</li>
-</ul></article>
-    </section>
-
-
-
-
-
-
+</section>
 
 		</div>
 	</div>
 
 	<div class="clearfix"></div>
 
-	
-		<div class="col-md-3">
-			<div id="toc" class="col-md-3 hidden-xs hidden-sm hidden-md"></div>
-		</div>
 	
 
 </div>

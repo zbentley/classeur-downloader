@@ -1,0 +1,1975 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">
+	<title>classeur-downloader Module: classeur-downloader</title>
+
+	<!--[if lt IE 9]>
+	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+	<link type="text/css" rel="stylesheet" href="styles/sunlight.default.css">
+
+	<link type="text/css" rel="stylesheet" href="styles/site.united.css">
+
+</head>
+
+<body>
+
+<div class="navbar navbar-default navbar-fixed-top navbar-inverse">
+<div class="container">
+	<div class="navbar-header">
+		<a class="navbar-brand" href="index.html">classeur-downloader</a>
+		<button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#topNavigation">
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+        </button>
+	</div>
+	<div class="navbar-collapse collapse" id="topNavigation">
+		<ul class="nav navbar-nav">
+			
+			<li class="dropdown">
+				<a href="modules.list.html" class="dropdown-toggle" data-toggle="dropdown">Modules<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="module-classeur-downloader.html">classeur-downloader</a></li>
+				</ul>
+			</li>
+			
+			<li class="dropdown">
+				<a href="tutorials.list.html" class="dropdown-toggle" data-toggle="dropdown">Tutorials<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="tutorial-DeveloperGuide.html">Developer's Guide</a></li><li><a href="tutorial-VersionIndex.html">Other Versions</a></li>
+				</ul>
+			</li>
+			
+		</ul>
+        
+            <div class="col-sm-3 col-md-3">
+                <form class="navbar-form" role="search">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search" name="q" id="search-input">
+                        <div class="input-group-btn">
+                            <button class="btn btn-default" id="search-submit"><i class="glyphicon glyphicon-search"></i></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        
+	</div>
+
+</div>
+</div>
+
+
+<div class="container" id="toc-content">
+<div class="row">
+
+	
+	<div class="col-md-8">
+	
+		<div id="main">
+			
+
+	<h1 class="page-title">Module: classeur-downloader</h1>
+<section>
+
+<header>
+    
+</header>
+
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>Module for downloading and listing files and folders stored in <a href="http://classeur.io/">Classeur</a>.</p></div>
+        
+
+        
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="classeur-downloader.js.html">classeur-downloader.js</a>,
+				 <a href="classeur-downloader.js.html#sunlight-1-line-13">line 13</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+	<dt class="tag-see method-doc-label method-doc-details-label">See:</dt>
+	<dd class="tag-see">
+		<ul>
+			<li><p>The <a href="index.html">README</a> for an overview and more usage examples.</p></li>
+			
+			<li><p>The <a href="https://github.com/zbentley/classeur-downloader">source code</a> on GitHub.</p></li>
+			
+			<li><p>The <a href="http://zbentley.github.io/classeur-api-client/versions/latest">classeur-api-client</a> module (which <code>classeur-downloader</code> is built around) for a lower-level way to interact with the Classeur API.</p></li>
+			</ul>
+	</dd>
+	
+
+	
+</dl>
+
+
+        
+            <h3>Examples</h3>
+            
+        <p class="code-caption">Installation</p>
+    
+    <pre class="sunlight-highlight-javascript">npm install classeur-downloader</pre>
+
+        <p class="code-caption">Saving a single file's markdown content</p>
+    
+    <pre class="sunlight-highlight-javascript">const downloader = require(&#x27;classeur-downloader&#x27;)
+downloader.saveSingleFile({
+    file: &#x27;some file ID&#x27;,
+    userId: &#x27;user ID&#x27;,
+    apiKey: &#x27;api key&#x27;,
+    path: &#x27;/some/path.md&#x27;,
+    markdown: true
+}, (error) =&gt; {
+    if (error) throw error
+})</pre>
+
+        <p class="code-caption">Saving directories</p>
+    
+    <pre class="sunlight-highlight-javascript">// Saves all files contained in &#x27;folder1&#x27; and &#x27;folder2&#x27; in subdirectories of mydir/ with those same names:
+downloader.saveTree({
+    folders: [&#x27;folder1&#x27;, &#x27;folder2&#x27; ]
+    userId: &#x27;user ID&#x27;,
+    apiKey: &#x27;api key&#x27;,
+    path: &#x27;mydir/&#x27;,
+    markdown: true
+}, (error) =&gt; {
+    if (error) throw error
+})</pre>
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        <dl>
+            
+<hr>
+<dt>
+    <h4 class="name" id=".saveSingleFile"><span class="type-signature">&lt;static> </span>saveSingleFile(options, callback)</h4>
+    
+    
+    <p class="summary">Saves a single Classeur file to a specified path on the local filesystem.</p>
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>This function can be used when you don't need/want to create container folders for your retrieved Classeur content.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-classeur-downloader.html#~Options:DownloadSingleFile">module:classeur-downloader~Options:DownloadSingleFile</a></span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><ul>
+<li><code>options.folders</code> may not be supplied to this function.</li>
+<li><code>options.byId</code> is ignored by this function.</li>
+<li>File content will be saved directly to <code>options.path</code> no folders or other metadata files will be created.</li>
+<li>File extensions (e.g. <code>.md</code>) will <em>not</em> be added by SaveSingleFile write the extension you want into <code>options.path</code> directly.</li>
+</ul></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>callback</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-classeur-downloader.html#~CompletionCallback">module:classeur-downloader~CompletionCallback</a></span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Called with an error, if one occurred, or <code>null</code> if all operations were successful.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="classeur-downloader.js.html">classeur-downloader.js</a>,
+				 <a href="classeur-downloader.js.html#sunlight-1-line-339">line 339</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <h5>Example</h5>
+        
+        <p class="code-caption">Saving a single file's markdown content</p>
+    
+    <pre class="sunlight-highlight-javascript">const downloader = require(&#x27;classeur-downloader&#x27;)
+downloader.saveSingleFile({
+    files: &#x27;some file id&#x27;,
+    userId: &#x27;user ID&#x27;,
+    apiKey: &#x27;api key&#x27;,
+    path: &#x27;myfile.markdown&#x27;,
+    markdown: true
+}, (error) =&gt; { if (error) throw error })</pre>
+
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id=".saveTree"><span class="type-signature">&lt;static> </span>saveTree(options, callback)</h4>
+    
+    
+    <p class="summary">Saves Classeur files and folders to a specified path on the local filesystem.</p>
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Folders in the <code>options.folders</code> array will be saved as root directories (with names determined by the presence or absence of <code>options.byId</code>), and all of the files they contain will be saved within them. Files in <code>options.files</code> will be saved at the top level.
+If the <code>options.byId</code> is <code>true</code>, files and folders' root names will be their Classeur object IDs. Extensions will be added regardless of <code>options.byId</code>, depending on the value of <code>options.addExtension</code>.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-classeur-downloader.html#~Options:DownloadFilesAndFolders">module:classeur-downloader~Options:DownloadFilesAndFolders</a></span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Options for which Classeur files and folders to retrieve, and how to save them.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>callback</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-classeur-downloader.html#~CompletionCallback">module:classeur-downloader~CompletionCallback</a></span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Called with an error, if one occurred, or <code>null</code> if all operations were successful.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="classeur-downloader.js.html">classeur-downloader.js</a>,
+				 <a href="classeur-downloader.js.html#sunlight-1-line-315">line 315</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <h5>Examples</h5>
+        
+        <p class="code-caption">Saving files by ID</p>
+    
+    <pre class="sunlight-highlight-javascript">// Assume the folder with ID &#x27;abcd&#x27; contains files with the IDs &#x27;foo&#x27;, &#x27;bar&#x27;, and &#x27;baz&#x27;.
+const downloader = require(&#x27;classeur-downloader&#x27;)
+downloader.saveTree({
+    files: [ &#x27;quux&#x27; ],
+    folders: [ &#x27;abcde&#x27; ],
+    userId: &#x27;user ID&#x27;,
+    apiKey: &#x27;api key&#x27;,
+    path: &#x27;mydir/&#x27;,
+    folderMetadata: true
+}, (error) =&gt; { if (error) throw error })
+// &#x27;mydir&#x27; will now contain:
+//    quux.json
+//    abcde.folder_metadata.json
+//    abcde
+//        \_ foo.json
+//        \_ bar.json
+//        \_ baz.json</pre>
+
+        <p class="code-caption">Saving markdown content</p>
+    
+    <pre class="sunlight-highlight-javascript">// Assume the folder with ID &#x27;abcd&#x27; has the UI-visible name &#x27;My Folder&#x27;.
+// Assume it contains two files with IDs &#x27;foo&#x27; and &#x27;bar&#x27;, and the names &#x27;My Stuff&#x27; and &#x27;My Other Stuff&#x27;.
+downloader.saveTree({
+    folders: [ &#x27;abcde&#x27; ],
+    userId: &#x27;user ID&#x27;,
+    apiKey: &#x27;api key&#x27;,
+    path: &#x27;mydir/&#x27;
+    markdown: true
+}, (error) =&gt; { if (error) throw error })
+// &#x27;mydir&#x27; will now contain:
+//    My Folder
+//        \_ My Stuff.md
+//        \_ My Other Stuff.md</pre>
+
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id=".showTree"><span class="type-signature">&lt;static> </span>showTree(options, callback)</h4>
+    
+    
+    <p class="summary">Prints out (to the console) a tree structure of the Classeur hierarchy of supplied files and folders.</p>
+    
+</dt>
+<dd>
+
+    
+
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-classeur-downloader.html#~Options:Global">module:classeur-downloader~Options:Global</a></span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Options for which Classeur files and folders to retrieve, and how to display them.</p>
+<ul>
+<li>Folders in the <code>options.folders</code> will be printed as root directories, and all of the files they contain will be printed.</li>
+<li>If the <code>options.byId</code> is <code>true</code>, files and folders will be printed out as 'id (name)'. Otherwise, they will be printed as 'name (id)', where 'name' is the human-readable name of an object in the Classeur UI.</li>
+</ul></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>callback</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-classeur-downloader.html#~CompletionCallback">module:classeur-downloader~CompletionCallback</a></span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Called with an error, if one occurred, or <code>null</code> if all operations were successful.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="classeur-downloader.js.html">classeur-downloader.js</a>,
+				 <a href="classeur-downloader.js.html#sunlight-1-line-270">line 270</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        </dl>
+    
+
+    
+        <h3 class="subsection-title">Type Definitions</h3>
+
+        <dl>
+                
+<hr>
+<dt>
+    <h4 class="name" id="~CompletionCallback"><span class="type-signature"></span>CompletionCallback(error, result)</h4>
+    
+    
+</dt>
+<dd>
+
+    
+
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Argument</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>error</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Error</span>
+
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+                    &lt;nullable><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>An throwable Error (or subclass thereof) if an error occurrend.</p>
+<ul>
+<li>For errors in writing files, <code>error</code> may be any of the errors raised by the <a href="https://nodejs.org/api/fs.html">fs</a> module.</li>
+<li>For errors retrieving data from the Classeur API, <code>error</code> may be one of the Error subclasses used by <a href="http://zbentley.github.io/classeur-api-client/versions/latest">classeur-api-client</a>. Errors will be supplied to <code>CompletionCallback</code>s in the same way they will be supplied to <a href="http://zbentley.github.io/classeur-api-client/versions/latest/module-classeur-api-client.html#.ScrubbedCallback">ClasseurClient~ScrubbedCallback</a>s.</li>
+<li><code>error</code> will always be <code>null</code> (not <code>undefined</code> or another falsy value) if no error occurred.</li>
+</ul></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>result</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">*</span>
+
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+                    &lt;nullable><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Behavior of <code>result</code> is not defined it should not be used. Will usually be <code>null</code>. May sometimes contain an array of partial result objects.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="classeur-downloader.js.html">classeur-downloader.js</a>,
+				 <a href="classeur-downloader.js.html#sunlight-1-line-254">line 254</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+            
+                
+<hr>
+<dt class="name" id="~Options:DownloadFilesAndFolders">
+    <h4 id="~Options:DownloadFilesAndFolders">Options:DownloadFilesAndFolders</h4>
+
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>Options for configuring the bulk download behavior of <code>classeur-downloader</code>.
+All options used by <a href="module-classeur-downloader.html#~Options:Global">module:classeur-downloader~Options:Global</a> are also accepted.</p>
+    </div>
+    
+
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
+<span class="param-type">Object</span>
+
+
+
+            </li>
+        </ul>
+    
+
+    
+<dl class="details">
+    
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    <dl>
+
+<table class="props table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Argument</th>
+        
+
+        
+        <th>Default</th>
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>path</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last"><p>Destination path to save files and folders from Classeur. <code>path</code> must be an existent, writable folder.</p>
+<ul>
+<li>All files in <code>options.files</code> will be saved inside of <code>path</code>. All folders in the <code>options.folders</code> will be created (with names according to the <code>byId</code> property) in <code>path</code>, and the files they contain will be created within those folders.</li>
+<li>If <code>options.overwrite</code> is not set and name collisions occur with files being saved into <code>path</code>, an error will be raised and save operations will halt. Partial results may exist on the filesystem.</li>
+</ul></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>overwrite</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    false
+                
+                </td>
+            
+
+            <td class="description last"><p>If true, items in <code>path</code> that already exist will be overwritten.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>folderMetadata</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    false
+                
+                </td>
+            
+
+            <td class="description last"><p>If true, generate JSON folder metadata for all folders in <code>folders</code>.</p>
+<ul>
+<li>If <code>true</code>, a single JSON file will be created next to every Classeur folder downloaded. That JSON file will be named after the folder, and will end in <code>.folder_metadata.json</code>. It will contain the full Classeur API metadata information for the folder. This is usually not useful, unless you are using <code>classeur-downlaoder</code> to back up a locally-hosted Classeur instance with the intent of using the generated files for some future restoration process.</li>
+</ul></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>markdown</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    false
+                
+                </td>
+            
+
+            <td class="description last"><p>Whether or not to write markdown content for files.</p>
+<ul>
+<li>If <code>true</code>, saved files' content will be the markdown content of Classeur documents.</li>
+<li>If <code>false</code>, files' content will be their full JSON data from Classeur. Full JSON data objects include markdown content and other fields, and will likely not be able to be opened directly in a Markdown editor.</li>
+</ul></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>addExtension</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    true
+                
+                </td>
+            
+
+            <td class="description last"><p>Whether or not appropriate extensions should be added to files written.</p>
+<ul>
+<li>If <code>true</code>, files saved with <code>options.markdown</code> set to <code>true</code> will have the <code>.md</code> extension, and files saved outside of <code>markdown</code> mode will have the <code>.json</code> extension.</li>
+<li>If false, extensions will not be added to files.</li>
+</ul></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+</dl>
+
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="classeur-downloader.js.html">classeur-downloader.js</a>,
+				 <a href="classeur-downloader.js.html#sunlight-1-line-223">line 223</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+</dd>
+
+            
+                
+<hr>
+<dt class="name" id="~Options:DownloadSingleFile">
+    <h4 id="~Options:DownloadSingleFile">Options:DownloadSingleFile</h4>
+
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>Options for configuring the single-file download behavior of <code>classeur-downloader</code>.
+All options used by <a href="module-classeur-downloader.html#~Options:Global">module:classeur-downloader~Options:Global</a> are also accepted.</p>
+    </div>
+    
+
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
+<span class="param-type">Object</span>
+
+
+
+            </li>
+        </ul>
+    
+
+    
+<dl class="details">
+    
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    <dl>
+
+<table class="props table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Argument</th>
+        
+
+        
+        <th>Default</th>
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>path</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last"><p>Destination path to save files and folders from Classeur. Must be either a nonexistent path in a writable directory, or an existent, writable file (if <code>options.overwrite</code> is set).</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>file</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    options.files[0]
+                
+                </td>
+            
+
+            <td class="description last"><p>Single file ID to download and save. If not provided, <code>options.files[0]</code> will be used.</p>
+<ul>
+<li>This option is mutually exclusive with <code>options.files</code>.</li>
+</ul></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>overwrite</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    false
+                
+                </td>
+            
+
+            <td class="description last"><p>If true, <code>path</code> will be overwritten with the new Classeur file content retrieved.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>markdown</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    false
+                
+                </td>
+            
+
+            <td class="description last"><p>Whether or not to write markdown content for <code>options.file</code>.</p>
+<ul>
+<li>If <code>true</code>, <code>options.file</code>'s content will be that file's markdown content, visible in the Classeur UI.</li>
+<li>If <code>false</code>, <code>options.file</code>'s content will be its full JSON data from Classeur. Full JSON data objects include markdown content and other fields, and will likely not be able to be opened directly in a Markdown editor.</li>
+</ul></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+</dl>
+
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="classeur-downloader.js.html">classeur-downloader.js</a>,
+				 <a href="classeur-downloader.js.html#sunlight-1-line-241">line 241</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+</dd>
+
+            
+                
+<hr>
+<dt class="name" id="~Options:Global">
+    <h4 id="~Options:Global">Options:Global</h4>
+
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>Options for configuring <code>classeur-downloader</code>.</p>
+    </div>
+    
+
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
+<span class="param-type">Object</span>
+
+
+
+            </li>
+        </ul>
+    
+
+    
+<dl class="details">
+    
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    <dl>
+
+<table class="props table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Argument</th>
+        
+
+        
+        <th>Default</th>
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>userId</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last"><p>User ID with which to connect to the Classeur API.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>apiKey</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last"><p>API key to use when connecting to the Classeur API. This can be obtained by re-generating your key in the Classeur 'User' preferences pane.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>files</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;String></span>
+
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last"><p>Array of file IDs to operate on.</p>
+<ul>
+<li>At least one value must be supplied in <code>options.files</code> or <code>options.folders</code>, otherwise an error will be raised.</li>
+</ul></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>folders</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;String></span>
+
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last"><p>Array of folder IDs to operate on.</p>
+<ul>
+<li>At least one value must be supplied in <code>options.files</code> or <code>options.folders</code>, otherwise an error will be raised.</li>
+</ul></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>byId</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    false
+                
+                </td>
+            
+
+            <td class="description last"><p>If true, files and folders will be handled (saved or printed) by ID. If false, they will be handled by Classeur human-readable name.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+</dl>
+
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="classeur-downloader.js.html">classeur-downloader.js</a>,
+				 <a href="classeur-downloader.js.html#sunlight-1-line-211">line 211</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+</dd>
+
+            </dl>
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+		</div>
+	</div>
+
+	<div class="clearfix"></div>
+
+	
+		<div class="col-md-3">
+			<div id="toc" class="col-md-3 hidden-xs hidden-sm hidden-md"></div>
+		</div>
+	
+
+</div>
+</div>
+
+
+    <div class="modal fade" id="searchResults">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Search results</h4>
+          </div>
+          <div class="modal-body"></div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div>
+
+
+<footer>
+
+
+	<span class="copyright">
+	Copyright Zac Bentley © 2015-2016
+	</span>
+
+<span class="jsdoc-message">
+	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.1</a>
+	
+		on Sat Sep 24th 2016
+	
+	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
+</span>
+</footer>
+
+<script src="scripts/docstrap.lib.js"></script>
+<script src="scripts/toc.js"></script>
+
+    <script type="text/javascript" src="scripts/fulltext-search-ui.js"></script>
+
+
+<script>
+$( function () {
+	$( "[id*='$']" ).each( function () {
+		var $this = $( this );
+
+		$this.attr( "id", $this.attr( "id" ).replace( "$", "__" ) );
+	} );
+
+	$( ".tutorial-section pre, .readme-section pre, pre.prettyprint.source" ).each( function () {
+		var $this = $( this );
+
+		var example = $this.find( "code" );
+		exampleText = example.html();
+		var lang = /{@lang (.*?)}/.exec( exampleText );
+		if ( lang && lang[1] ) {
+			exampleText = exampleText.replace( lang[0], "" );
+			example.html( exampleText );
+			lang = lang[1];
+		} else {
+			var langClassMatch = example.parent()[0].className.match(/lang\-(\S+)/);
+			lang = langClassMatch ? langClassMatch[1] : "javascript";
+		}
+
+		if ( lang ) {
+
+			$this
+			.addClass( "sunlight-highlight-" + lang )
+			.addClass( "linenums" )
+			.html( example.html() );
+
+		}
+	} );
+
+	Sunlight.highlightAll( {
+		lineNumbers : true,
+		showMenu : true,
+		enableDoclinks : true
+	} );
+
+	$.catchAnchorLinks( {
+        navbarOffset: 10
+	} );
+	$( "#toc" ).toc( {
+		anchorName  : function ( i, heading, prefix ) {
+			return $( heading ).attr( "id" ) || ( prefix + i );
+		},
+		selectors   : "#toc-content h1,#toc-content h2,#toc-content h3,#toc-content h4",
+		showAndHide : false,
+		smoothScrolling: true
+	} );
+
+	$( "#main span[id^='toc']" ).addClass( "toc-shim" );
+	$( '.dropdown-toggle' ).dropdown();
+
+    $( "table" ).each( function () {
+      var $this = $( this );
+      $this.addClass('table');
+    } );
+
+} );
+</script>
+
+
+
+<!--Navigation and Symbol Display-->
+
+
+<!--Google Analytics-->
+
+
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            SearcherDisplay.init();
+        });
+    </script>
+
+
+</body>
+</html>
