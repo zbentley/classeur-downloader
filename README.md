@@ -1,5 +1,7 @@
 # classeur-downloader
 
+**Archived:** this project, and Classeur itself, are in various states of deactivated and spun down, so this GitHub repository has been archived.
+
 Script to download files and folders from http://classeur.io/
 [![npm version](https://badge.fury.io/js/classeur-downloader.svg)](https://www.npmjs.com/package/classeur-downloader)
 
